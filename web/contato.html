@@ -80,7 +80,7 @@
         </div>
       </div>
 
-      <!-- Formulário de cadastro -->
+      <!-- Formulário de cadastro (EM STANDBY POR QUESTÕES DE TSE/LEI ELEITORAL) ──
       <div class="lead-form">
         <h3>Receba Nossos Conteúdos</h3>
         <p>Cadastre-se gratuitamente e receba mensagens, estudos bíblicos e devocionais.</p>
@@ -119,6 +119,7 @@
           <div class="form-msg" id="lead-msg" style="display:none"></div>
         </form>
       </div>
+      -->
     </div>
   </div>
 </section>
@@ -149,41 +150,44 @@
   document.getElementById('ano').textContent = new Date().getFullYear();
   document.getElementById('hamburger').addEventListener('click', () => document.getElementById('nav').classList.toggle('open'));
 
-  document.getElementById('form-lead').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const btn = document.getElementById('btn-lead');
-    const msg = document.getElementById('lead-msg');
-    btn.disabled = true;
-    btn.innerHTML = '<span class="spinner"></span> Enviando...';
-    msg.style.display = 'none';
+  const formLead = document.getElementById('form-lead');
+  if (formLead) {
+    formLead.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('btn-lead');
+      const msg = document.getElementById('lead-msg');
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner"></span> Enviando...';
+      msg.style.display = 'none';
 
-    const body = {
-      nome: document.getElementById('lead-nome').value.trim(),
-      email: document.getElementById('lead-email').value.trim(),
-      whatsapp: document.getElementById('lead-whatsapp').value.trim(),
-      cidade: document.getElementById('lead-cidade').value.trim(),
-      bairro: document.getElementById('lead-bairro').value.trim(),
-      origem: 'contato',
-    };
+      const body = {
+        nome: document.getElementById('lead-nome').value.trim(),
+        email: document.getElementById('lead-email').value.trim(),
+        whatsapp: document.getElementById('lead-whatsapp').value.trim(),
+        cidade: document.getElementById('lead-cidade').value.trim(),
+        bairro: document.getElementById('lead-bairro').value.trim(),
+        origem: 'contato',
+      };
 
-    try {
-      const res = await fetch(`${API}/api/leads`, {
-        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body),
-      });
-      const data = await res.json();
-      msg.textContent = res.ok ? 'Cadastrado com sucesso. Você receberá nossos conteúdos em breve.' : (data.error || 'Erro ao cadastrar.');
-      msg.className = `form-msg ${res.ok ? 'success' : 'error'}`;
-      msg.style.display = 'block';
-      if (res.ok) e.target.reset();
-    } catch {
-      msg.textContent = 'Erro de conexão. Tente novamente.';
-      msg.className = 'form-msg error';
-      msg.style.display = 'block';
-    } finally {
-      btn.disabled = false;
-      btn.textContent = 'Quero me Cadastrar';
-    }
-  });
+      try {
+        const res = await fetch(`${API}/api/leads`, {
+          method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body),
+        });
+        const data = await res.json();
+        msg.textContent = res.ok ? 'Cadastrado com sucesso. Você receberá nossos conteúdos em breve.' : (data.error || 'Erro ao cadastrar.');
+        msg.className = `form-msg ${res.ok ? 'success' : 'error'}`;
+        msg.style.display = 'block';
+        if (res.ok) e.target.reset();
+      } catch {
+        msg.textContent = 'Erro de conexão. Tente novamente.';
+        msg.className = 'form-msg error';
+        msg.style.display = 'block';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Quero me Cadastrar';
+      }
+    });
+  }
 </script>
 </body>
 </html>

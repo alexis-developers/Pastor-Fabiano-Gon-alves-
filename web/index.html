@@ -186,7 +186,7 @@
   </div>
 </section>
 
-<!-- ── CAPTAÇÃO DE LEADS ──────────────────────────────── -->
+<!-- ── CAPTAÇÃO DE LEADS (EM STANDBY POR QUESTÕES DE TSE/LEI ELEITORAL) ──
 <section class="section">
   <div class="container">
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:48px;align-items:start">
@@ -259,6 +259,7 @@
     </div>
   </div>
 </section>
+-->
 
 <!-- ── FOOTER ────────────────────────────────────────── -->
 <footer class="footer">
@@ -400,48 +401,51 @@
   }
 
   // ── Captação de Leads ──────────────────────────────────
-  document.getElementById('form-lead').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const btn = document.getElementById('btn-lead');
-    const msg = document.getElementById('lead-msg');
-    btn.disabled = true;
-    btn.innerHTML = '<span class="spinner"></span> Enviando...';
-    msg.className = 'form-msg';
-    msg.style.display = 'none';
+  const formLead = document.getElementById('form-lead');
+  if (formLead) {
+    formLead.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('btn-lead');
+      const msg = document.getElementById('lead-msg');
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner"></span> Enviando...';
+      msg.className = 'form-msg';
+      msg.style.display = 'none';
 
-    const body = {
-      nome: document.getElementById('lead-nome').value.trim(),
-      email: document.getElementById('lead-email').value.trim(),
-      whatsapp: document.getElementById('lead-whatsapp').value.trim(),
-      cidade: document.getElementById('lead-cidade').value.trim(),
-      bairro: document.getElementById('lead-bairro').value.trim(),
-      origem: 'home',
-    };
+      const body = {
+        nome: document.getElementById('lead-nome').value.trim(),
+        email: document.getElementById('lead-email').value.trim(),
+        whatsapp: document.getElementById('lead-whatsapp').value.trim(),
+        cidade: document.getElementById('lead-cidade').value.trim(),
+        bairro: document.getElementById('lead-bairro').value.trim(),
+        origem: 'home',
+      };
 
-    try {
-      const res = await fetch(`${API}/api/leads`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-      });
-      const data = await res.json();
-      if (res.ok) {
-        msg.textContent = 'Cadastro realizado. Você receberá nossos conteúdos em breve.';
-        msg.className = 'form-msg success';
-        e.target.reset();
-      } else {
-        msg.textContent = data.error || 'Erro ao cadastrar. Tente novamente.';
+      try {
+        const res = await fetch(`${API}/api/leads`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        });
+        const data = await res.json();
+        if (res.ok) {
+          msg.textContent = 'Cadastro realizado. Você receberá nossos conteúdos em breve.';
+          msg.className = 'form-msg success';
+          e.target.reset();
+        } else {
+          msg.textContent = data.error || 'Erro ao cadastrar. Tente novamente.';
+          msg.className = 'form-msg error';
+        }
+      } catch {
+        msg.textContent = 'Erro de conexão. Verifique sua internet e tente novamente.';
         msg.className = 'form-msg error';
+      } finally {
+        msg.style.display = 'block';
+        btn.disabled = false;
+        btn.textContent = 'Quero Receber Conteúdo';
       }
-    } catch {
-      msg.textContent = 'Erro de conexão. Verifique sua internet e tente novamente.';
-      msg.className = 'form-msg error';
-    } finally {
-      msg.style.display = 'block';
-      btn.disabled = false;
-      btn.textContent = 'Quero Receber Conteúdo';
-    }
-  });
+    });
+  }
 
   loadArtigos();
   loadPensamento();
