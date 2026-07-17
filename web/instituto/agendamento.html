@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agendamento — Ouvido Amigo</title>
+  <meta name="description" content="Agende sua consulta com psicólogo ou psicanalista do Ouvido Amigo.">
+  <link rel="icon" href="/assets/favicon.ico">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+  <style>
+    .step-indicator {
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      margin-bottom: 40px;
+    }
+    .step {
+      display: flex;
+      align-items: center;
+      gap: 0;
+    }
+    .step-dot {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: var(--gray-200);
+      color: var(--gray-400);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 0.9rem;
+      transition: all 0.3s;
+    }
+    .step-dot.active { background: var(--blue); color: white; }
+    .step-dot.done { background: var(--gold); color: white; }
+    .step-line { width: 60px; height: 2px; background: var(--gray-200); transition: background 0.3s; }
+    .step-line.done { background: var(--gold); }
+    .step-label { font-size: 0.72rem; text-align: center; margin-top: 4px; color: var(--gray-400); font-weight: 600; }
+
+    .calendar {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 6px;
+      margin-top: 16px;
+    }
+    .cal-header { font-size: 0.72rem; font-weight: 700; text-align: center; color: var(--gray-400); padding: 4px; text-transform: uppercase; }
+    .cal-day {
+      aspect-ratio: 1;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.85rem; font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .cal-day.empty { cursor: default; }
+    .cal-day.available { background: rgba(30,58,95,0.08); color: var(--blue); }
+    .cal-day.available:hover { background: var(--blue); color: white; }
+    .cal-day.selected { background: var(--blue); color: white; }
+    .cal-day.unavailable { color: var(--gray-200); cursor: not-allowed; }
+    .cal-day.today { border: 2px solid var(--gold); }
+
+    .horarios { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+    .horario {
+      padding: 8px 16px;
+      border: 1.5px solid var(--gray-200);
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--blue);
+      transition: all 0.2s;
+    }
+    .horario:hover { background: var(--blue); color: white; border-color: var(--blue); }
+    .horario.selected { background: var(--blue); color: white; border-color: var(--blue); }
+
+    .doutor-card {
+      border: 2px solid var(--gray-200);
+      border-radius: 12px;
+      padding: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      transition: all 0.2s;
+    }
+    .doutor-card:hover { border-color: var(--blue); background: rgba(30,58,95,0.03); }
+    .doutor-card.selected { border-color: var(--blue); background: rgba(30,58,95,0.06); }
+    .doutor-foto { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; background: var(--blue); display:flex;align-items:center;justify-content:center;font-size:1.5rem;color:rgba(255,255,255,0.3); }
+  </style>
+</head>
+<body>
+
+<header class="header" id="header">
+  <div class="container">
+    <a href="/" class="header__logo">
+      <span class="logo-pastor">Pastor</span>
+      <span class="logo-name">Fabiano Gonçalves</span>
+    </a>
+    <nav>
+      <ul class="header__nav" id="nav">
+        <li><a href="/">Início</a></li>
+        <li><a href="/instituto/chat.html">Chat Pastoral</a></li>
+        <li><a href="/contato.html">Contato</a></li>
+      </ul>
+    </nav>
+    <button class="header__hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<div class="page-hero" style="padding-bottom:40px">
+  <div class="container">
+    <h1>Agendar <span class="page-hero__gold">Consulta</span></h1>
+    <p>Escolha o profissional, data e horário de sua preferência</p>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container" style="max-width:760px">
+
+    <!-- Indicador de passos -->
+    <div class="step-indicator">
+      <div class="step">
+        <div>
+          <div class="step-dot active" id="dot-1">1</div>
+          <div class="step-label">Profissional</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-line" id="line-1"></div>
+      </div>
+      <div class="step">
+        <div>
+          <div class="step-dot" id="dot-2">2</div>
+          <div class="step-label">Data & Hora</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-line" id="line-2"></div>
+      </div>
+      <div class="step">
+        <div>
+          <div class="step-dot" id="dot-3">3</div>
+          <div class="step-label">Seus dados</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-line" id="line-3"></div>
+      </div>
+      <div class="step">
+        <div>
+          <div class="step-dot" id="dot-4">4</div>
+          <div class="step-label">Confirmação</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PASSO 1: Escolher doutor -->
+    <div id="step-1">
+      <h2 class="text-blue" style="margin-bottom:8px">Escolha o profissional</h2>
+      <div class="gold-bar" style="margin-bottom:24px"></div>
+      <div id="doutores-lista" style="display:flex;flex-direction:column;gap:12px">
+        <div class="skeleton" style="height:88px;border-radius:12px"></div>
+        <div class="skeleton" style="height:88px;border-radius:12px"></div>
+      </div>
+      <button class="btn btn-primary" style="margin-top:24px" id="btn-step1" onclick="goStep(2)" disabled>
+        Próximo: Escolher Data →
+      </button>
+    </div>
+
+    <!-- PASSO 2: Data e horário -->
+    <div id="step-2" style="display:none">
+      <h2 class="text-blue" style="margin-bottom:8px">Escolha a data e horário</h2>
+      <div class="gold-bar" style="margin-bottom:24px"></div>
+
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+        <button onclick="mudarMes(-1)" style="background:none;border:1px solid var(--gray-200);border-radius:8px;padding:6px 12px;cursor:pointer;font-size:1.2rem">‹</button>
+        <h3 id="mes-label" class="text-blue"></h3>
+        <button onclick="mudarMes(1)" style="background:none;border:1px solid var(--gray-200);border-radius:8px;padding:6px 12px;cursor:pointer;font-size:1.2rem">›</button>
+      </div>
+
+      <div class="calendar" id="calendar">
+        <div class="cal-header">Dom</div><div class="cal-header">Seg</div><div class="cal-header">Ter</div>
+        <div class="cal-header">Qua</div><div class="cal-header">Qui</div><div class="cal-header">Sex</div><div class="cal-header">Sáb</div>
+      </div>
+
+      <div id="horarios-section" style="display:none;margin-top:24px">
+        <h3 class="text-blue" style="margin-bottom:8px">Horários disponíveis em <span id="data-label"></span></h3>
+        <div class="horarios" id="horarios-lista"></div>
+      </div>
+
+      <div style="display:flex;gap:12px;margin-top:24px">
+        <button class="btn btn-outline" onclick="goStep(1)">← Voltar</button>
+        <button class="btn btn-primary" id="btn-step2" onclick="goStep(3)" disabled>Próximo: Meus Dados →</button>
+      </div>
+    </div>
+
+    <!-- PASSO 3: Dados do paciente -->
+    <div id="step-3" style="display:none">
+      <h2 class="text-blue" style="margin-bottom:8px">Seus dados</h2>
+      <div class="gold-bar" style="margin-bottom:24px"></div>
+      <form id="form-agendamento" novalidate>
+        <div class="form-group">
+          <label for="ag-nome">Nome completo *</label>
+          <input type="text" id="ag-nome" placeholder="Seu nome completo" required>
+        </div>
+        <div class="form-group">
+          <label for="ag-whatsapp">WhatsApp *</label>
+          <input type="tel" id="ag-whatsapp" placeholder="(00) 00000-0000" required>
+        </div>
+        <div class="form-group">
+          <label for="ag-email">E-mail</label>
+          <input type="email" id="ag-email" placeholder="seu@email.com">
+        </div>
+        <div class="form-group">
+          <label for="ag-obs">Observações</label>
+          <textarea id="ag-obs" rows="3" placeholder="Alguma informação adicional que queira compartilhar..."></textarea>
+        </div>
+        <div style="display:flex;gap:12px;margin-top:24px">
+          <button type="button" class="btn btn-outline" onclick="goStep(2)">← Voltar</button>
+          <button type="submit" class="btn btn-primary" id="btn-agendar">Confirmar Agendamento</button>
+        </div>
+        <div class="form-msg" id="ag-msg" style="display:none"></div>
+      </form>
+    </div>
+
+    <!-- PASSO 4: Confirmação -->
+    <div id="step-4" style="display:none;text-align:center;padding:40px 0">
+      <div style="width:72px;height:72px;background:#f0fdf4;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px"><svg viewBox="0 0 24 24" fill="#16a34a" width="36" height="36"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+      <h2 class="text-blue">Agendamento Confirmado!</h2>
+      <div class="gold-bar" style="margin:16px auto 24px"></div>
+      <div style="background:var(--gray-50);border-radius:12px;padding:24px;margin-bottom:24px;text-align:left" id="resumo-agendamento"></div>
+      <p style="color:var(--gray-400);font-size:0.88rem">Você receberá uma confirmação pelo WhatsApp em breve.</p>
+      <a href="/instituto/" class="btn btn-primary" style="margin-top:24px">← Voltar</a>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer__brand"><h3>Ouvido Amigo</h3></div>
+    <div class="footer__center"><div class="footer__qr"><img src="/assets/qr-contato.png" alt="QR Code"></div></div>
+    <ul class="footer__social"></ul>
+  </div>
+  <div class="footer__bottom">
+    <div class="container">
+      <p>© <span id="ano"></span> Pastor Fabiano Gonçalves.</p>
+      <p class="footer__dev">Desenvolvido por <a href="https://desenvolvimentodesites.dev.br/" target="_blank" rel="noopener">Alexis Marketing &amp; Dev</a></p>
+      <a href="/admin/" class="footer__admin-link" title="Acesso administrativo" aria-label="Admin"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg></a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const API = 'https://fabiano-api.dev-teste.workers.dev';
+  document.getElementById('ano').textContent = new Date().getFullYear();
+  document.getElementById('hamburger').addEventListener('click', () => document.getElementById('nav').classList.toggle('open'));
+
+  let estado = { doutorId: null, doutorNome: '', data: '', hora: '', mes: new Date() };
+  let vagasDisponiveis = {};
+
+  // Pré-selecionar doutor via query param
+  const paramDoutor = new URLSearchParams(location.search).get('doutor');
+
+  // ── Passos ──────────────────────────────────────────────
+  function goStep(n) {
+    [1,2,3,4].forEach(i => {
+      document.getElementById(`step-${i}`).style.display = i === n ? 'block' : 'none';
+      const dot = document.getElementById(`dot-${i}`);
+      dot.className = 'step-dot' + (i < n ? ' done' : i === n ? ' active' : '');
+      if (i < 4) document.getElementById(`line-${i}`).className = 'step-line' + (i < n ? ' done' : '');
+    });
+    if (n === 2) renderCalendar();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ── Carregar doutores ────────────────────────────────────
+  async function loadDoutores() {
+    const res = await fetch(`${API}/api/doutores`);
+    const data = await res.json();
+    const lista = document.getElementById('doutores-lista');
+    if (!data.length) {
+      lista.innerHTML = '<p style="color:var(--gray-400)">Nenhum profissional disponível no momento.</p>';
+      return;
+    }
+    lista.innerHTML = data.map(d => `
+      <div class="doutor-card" id="doutor-${d.id}" onclick="selectDoutor(${d.id}, '${d.nome}', ${d.id})">
+        <div class="doutor-foto">${d.foto_url ? `<img src="${d.foto_url}" alt="${d.nome}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">` : '<svg viewBox="0 0 24 24" fill="#9ca3af" width="28" height="28"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>'}</div>
+        <div>
+          <strong style="color:var(--blue)">${d.nome}</strong>
+          <p style="font-size:0.82rem;color:var(--gold);font-weight:600">${d.especialidade}</p>
+          ${d.registro ? `<p style="font-size:0.75rem;color:var(--gray-400)">${d.registro}</p>` : ''}
+        </div>
+        <div style="margin-left:auto;width:20px;height:20px;border-radius:50%;border:2px solid var(--gray-200)" id="check-${d.id}"></div>
+      </div>
+    `).join('');
+
+    if (paramDoutor) {
+      const d = data.find(x => x.id == paramDoutor);
+      if (d) selectDoutor(d.id, d.nome, d.id);
+    }
+  }
+
+  function selectDoutor(id, nome) {
+    document.querySelectorAll('.doutor-card').forEach(el => { el.classList.remove('selected'); });
+    document.querySelectorAll('[id^="check-"]').forEach(el => { el.style.background = ''; el.innerHTML = ''; });
+    document.getElementById(`doutor-${id}`)?.classList.add('selected');
+    const check = document.getElementById(`check-${id}`);
+    if (check) { check.style.background = 'var(--blue)'; check.innerHTML = '✓'; check.style.color = 'white'; check.style.fontSize = '0.7rem'; check.style.display = 'flex'; check.style.alignItems = 'center'; check.style.justifyContent = 'center'; }
+    estado.doutorId = id;
+    estado.doutorNome = nome;
+    document.getElementById('btn-step1').disabled = false;
+  }
+
+  // ── Calendário ───────────────────────────────────────────
+  async function renderCalendar() {
+    if (!estado.doutorId) return;
+    const mes = estado.mes.toISOString().slice(0, 7);
+    const nomeMes = estado.mes.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+    document.getElementById('mes-label').textContent = nomeMes.charAt(0).toUpperCase() + nomeMes.slice(1);
+
+    const res = await fetch(`${API}/api/agenda/${estado.doutorId}?mes=${mes}`);
+    vagasDisponiveis = await res.json();
+
+    const cal = document.getElementById('calendar');
+    const headers = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'].map(d => `<div class="cal-header">${d}</div>`).join('');
+
+    const [ano, mesNum] = mes.split('-').map(Number);
+    const primeiro = new Date(ano, mesNum - 1, 1).getDay();
+    const totalDias = new Date(ano, mesNum, 0).getDate();
+    const hoje = new Date().toISOString().slice(0, 10);
+
+    let html = headers;
+    for (let i = 0; i < primeiro; i++) html += `<div class="cal-day empty"></div>`;
+    for (let d = 1; d <= totalDias; d++) {
+      const data = `${mes}-${String(d).padStart(2, '0')}`;
+      const disponivel = !!vagasDisponiveis[data]?.length;
+      const passado = data < hoje;
+      const selecionado = data === estado.data;
+      const isHoje = data === hoje;
+      let cls = 'cal-day';
+      if (passado) cls += ' unavailable';
+      else if (selecionado) cls += ' selected';
+      else if (disponivel) cls += ' available';
+      else cls += ' unavailable';
+      if (isHoje) cls += ' today';
+      html += `<div class="${cls}" onclick="${!passado && disponivel ? `selectData('${data}')` : ''}">${d}</div>`;
+    }
+    cal.innerHTML = html;
+  }
+
+  function mudarMes(delta) {
+    estado.mes = new Date(estado.mes.getFullYear(), estado.mes.getMonth() + delta, 1);
+    estado.data = '';
+    estado.hora = '';
+    document.getElementById('horarios-section').style.display = 'none';
+    document.getElementById('btn-step2').disabled = true;
+    renderCalendar();
+  }
+
+  function selectData(data) {
+    estado.data = data;
+    estado.hora = '';
+    document.querySelectorAll('.cal-day.selected').forEach(el => el.classList.remove('selected'));
+    event.target.classList.add('selected');
+
+    const horarios = vagasDisponiveis[data] || [];
+    const sec = document.getElementById('horarios-section');
+    sec.style.display = 'block';
+    document.getElementById('data-label').textContent = new Date(data + 'T12:00:00').toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
+    document.getElementById('horarios-lista').innerHTML = horarios.map(h =>
+      `<div class="horario" onclick="selectHorario('${h}', this)">${h}</div>`
+    ).join('');
+    document.getElementById('btn-step2').disabled = true;
+  }
+
+  function selectHorario(hora, el) {
+    document.querySelectorAll('.horario.selected').forEach(h => h.classList.remove('selected'));
+    el.classList.add('selected');
+    estado.hora = hora;
+    document.getElementById('btn-step2').disabled = false;
+  }
+
+  // ── Agendar ──────────────────────────────────────────────
+  document.getElementById('form-agendamento').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('btn-agendar');
+    const msg = document.getElementById('ag-msg');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span> Confirmando...';
+    msg.style.display = 'none';
+
+    const body = {
+      doutor_id: estado.doutorId,
+      paciente_nome: document.getElementById('ag-nome').value.trim(),
+      paciente_whatsapp: document.getElementById('ag-whatsapp').value.trim(),
+      paciente_email: document.getElementById('ag-email').value.trim(),
+      data: estado.data,
+      hora: estado.hora,
+      observacoes: document.getElementById('ag-obs').value.trim(),
+    };
+
+    try {
+      const res = await fetch(`${API}/api/agendamentos`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        document.getElementById('resumo-agendamento').innerHTML = `
+          <p><strong>Profissional:</strong> ${estado.doutorNome}</p>
+          <p><strong>Data:</strong> ${new Date(estado.data + 'T12:00:00').toLocaleDateString('pt-BR', {weekday:'long',day:'numeric',month:'long',year:'numeric'})}</p>
+          <p><strong>Horário:</strong> ${estado.hora}</p>
+          <p><strong>Paciente:</strong> ${body.paciente_nome}</p>
+          <p><strong>WhatsApp:</strong> ${body.paciente_whatsapp}</p>
+        `;
+        goStep(4);
+      } else {
+        msg.textContent = data.error || 'Erro ao agendar.';
+        msg.className = 'form-msg error';
+        msg.style.display = 'block';
+        btn.disabled = false;
+        btn.textContent = 'Confirmar Agendamento';
+      }
+    } catch {
+      msg.textContent = 'Erro de conexão. Tente novamente.';
+      msg.className = 'form-msg error';
+      msg.style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'Confirmar Agendamento';
+    }
+  });
+
+  loadDoutores();
+</script>
+</body>
+</html>

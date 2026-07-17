@@ -1,0 +1,14 @@
+# Dependencias
+node_modules/
+.wrangler/
+
+# Configuracoes locais / Segredos
+.env
+.env.local
+
+# Logs
+*.log
+
+# Sistema
+.DS_Store
+Thumbs.db

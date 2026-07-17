@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="page-title">Estudos Bíblicos: Como Ler e Interpretar a Bíblia — Pastor Fabiano Gonçalves</title>
+  <meta name="description" id="page-desc" content="Aprenda como ler a Bíblia para iniciantes, interpretar as Escrituras corretamente e fazer seu devocional diário. Estudos bíblicos gratuitos e aprofundados.">
+  <link rel="canonical" href="https://fabianogoncalves.com.br/artigos/">
+  <meta property="og:title" content="Estudos Bíblicos — Pastor Fabiano Gonçalves">
+  <meta property="og:description" content="Como ler e interpretar a Bíblia, devocionais e estudos gratuitos.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://fabianogoncalves.com.br/artigos/">
+  <link rel="icon" href="/assets/favicon.ico">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+  <style>
+    .artigo-body { max-width: 780px; margin: 0 auto; }
+    .artigo-body p { margin-bottom: 16px; line-height: 1.9; color: var(--gray-600); }
+    .artigo-body h2, .artigo-body h3 { color: var(--blue); margin: 28px 0 12px; }
+    .artigo-body blockquote {
+      border-left: 4px solid var(--gold);
+      padding: 12px 20px;
+      margin: 20px 0;
+      background: var(--gray-50);
+      border-radius: 0 8px 8px 0;
+      font-style: italic;
+      color: var(--gray-800);
+    }
+    .tag-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+    .tag { background: rgba(30,58,95,0.08); color: var(--blue); padding: 4px 12px; border-radius: 0; font-size: 0.78rem; font-weight: 600; }
+  </style>
+</head>
+<body>
+
+<header class="header" id="header">
+  <div class="container">
+    <a href="/" class="header__logo">
+      <span class="logo-pastor">Pastor</span>
+      <span class="logo-name">Fabiano Gonçalves</span>
+    </a>
+    <nav>
+      <ul class="header__nav" id="nav">
+        <li><a href="/">Início</a></li>
+        <li><a href="/sobre.html">Sobre</a></li>
+        <li><a href="/mensagens.html">Mensagens</a></li>
+        <li><a href="/noticias/">Notícias</a></li>
+        <li><a href="/artigos/" class="active">Artigos</a></li>
+        <li><a href="/contato.html">Contato</a></li>
+      </ul>
+    </nav>
+    <button class="header__hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<!-- LISTAGEM -->
+<div id="view-lista">
+  <div class="page-hero">
+    <div class="container">
+      <h1>Estudos <span class="page-hero__gold">Bíblicos</span></h1>
+      <p>Artigos para compreender as Escrituras com clareza, sempre fundamentados na Palavra de Deus</p>
+    </div>
+  </div>
+  <section class="section">
+    <div class="container">
+      <div class="cards-grid" id="artigos-grid" style="grid-template-columns:repeat(auto-fill,minmax(300px,1fr))">
+        <div class="card" style="border-top:4px solid var(--gold)"><div class="card__body" style="padding:28px 24px"><div class="skeleton" style="height:14px;width:40%;margin-bottom:12px"></div><div class="skeleton" style="height:20px;width:90%;margin-bottom:10px"></div><div class="skeleton" style="height:14px;width:80%;margin-bottom:6px"></div><div class="skeleton" style="height:14px;width:60%"></div></div></div>
+        <div class="card" style="border-top:4px solid var(--gold)"><div class="card__body" style="padding:28px 24px"><div class="skeleton" style="height:14px;width:40%;margin-bottom:12px"></div><div class="skeleton" style="height:20px;width:90%;margin-bottom:10px"></div><div class="skeleton" style="height:14px;width:80%;margin-bottom:6px"></div><div class="skeleton" style="height:14px;width:60%"></div></div></div>
+        <div class="card" style="border-top:4px solid var(--gold)"><div class="card__body" style="padding:28px 24px"><div class="skeleton" style="height:14px;width:40%;margin-bottom:12px"></div><div class="skeleton" style="height:20px;width:90%;margin-bottom:10px"></div><div class="skeleton" style="height:14px;width:80%;margin-bottom:6px"></div><div class="skeleton" style="height:14px;width:60%"></div></div></div>
+      </div>
+      <div class="text-center mt-40" id="paginacao"></div>
+    </div>
+  </section>
+</div>
+
+<!-- DETALHE -->
+<div id="view-detalhe" style="display:none">
+  <div style="padding-top:var(--header-h)"></div>
+  <section class="section">
+    <div class="container">
+      <div style="margin-bottom:24px">
+        <a href="/artigos/" style="color:var(--blue);font-size:0.88rem;font-weight:600">← Voltar para Estudos</a>
+      </div>
+      <div class="artigo-body" id="artigo-conteudo">
+        <div class="skeleton" style="height:40px;width:80%;margin-bottom:16px;border-radius:4px"></div>
+        <div class="skeleton" style="height:20px;width:60%;margin-bottom:24px;border-radius:4px"></div>
+        <div class="skeleton" style="height:16px;width:100%;margin-bottom:8px;border-radius:4px"></div>
+        <div class="skeleton" style="height:16px;width:95%;margin-bottom:8px;border-radius:4px"></div>
+        <div class="skeleton" style="height:16px;width:90%;border-radius:4px"></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer__brand"><h3>Pastor Fabiano Gonçalves</h3><p>Estudos bíblicos para edificação da fé.</p></div>
+    <div class="footer__center"><div class="footer__qr"><img src="/assets/qr-contato.png" alt="QR Code"></div></div>
+    <ul class="footer__social">
+      <li><a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="white"><path d="M23.5 6.2c-.3-1-1.1-1.8-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5c-1 .3-1.8 1.1-2.1 2.1C0 8.1 0 12 0 12s0 3.9.5 5.8c.3 1 1.1 1.8 2.1 2.1 1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5c1-.3 1.8-1.1 2.1-2.1.5-1.9.5-5.8.5-5.8s0-3.9-.5-5.8zM9.7 15.5V8.5l6.3 3.5-6.3 3.5z"/></svg></a></li>
+    </ul>
+  </div>
+  <div class="footer__bottom">
+    <div class="container">
+      <p>© <span id="ano"></span> Pastor Fabiano Gonçalves.</p>
+      <p class="footer__dev">Desenvolvido por <a href="https://desenvolvimentodesites.dev.br/" target="_blank" rel="noopener">Alexis Marketing &amp; Dev</a></p>
+      <a href="/admin/" class="footer__admin-link" title="Acesso administrativo" aria-label="Admin"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg></a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const API = 'https://fabiano-api.dev-teste.workers.dev';
+  document.getElementById('ano').textContent = new Date().getFullYear();
+  document.getElementById('hamburger').addEventListener('click', () => document.getElementById('nav').classList.toggle('open'));
+
+  const slug = new URLSearchParams(location.search).get('slug');
+  if (slug) {
+    document.getElementById('view-lista').style.display = 'none';
+    document.getElementById('view-detalhe').style.display = 'block';
+    loadArtigo(slug);
+  } else {
+    loadArtigos(1);
+  }
+
+  async function loadArtigos(page) {
+    try {
+      const res = await fetch(`${API}/api/artigos?page=${page}`);
+      const data = await res.json();
+      const grid = document.getElementById('artigos-grid');
+      if (!data.artigos?.length) { grid.innerHTML = '<p style="grid-column:1/-1;color:var(--gray-400)">Nenhum estudo publicado ainda.</p>'; return; }
+      grid.innerHTML = data.artigos.map(a => `
+        <a href="/artigos/?slug=${a.slug}" class="card" style="display:block;border-top:4px solid var(--gold)">
+          <div class="card__body" style="padding:28px 24px">
+            <span style="display:inline-block;background:rgba(30,58,95,0.08);color:var(--blue);padding:3px 10px;border-radius:0;font-size:0.72rem;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;margin-bottom:12px">Estudo Bíblico</span>
+            <h3 style="margin-bottom:10px">${a.titulo}</h3>
+            ${a.descricao ? `<p style="font-size:0.88rem;color:var(--gray-600);line-height:1.7;margin-bottom:12px">${a.descricao.slice(0, 120)}...</p>` : ''}
+            ${a.palavras_chave ? `<div class="tag-list">${a.palavras_chave.split(',').slice(0,3).map(t => `<span class="tag">${t.trim()}</span>`).join('')}</div>` : ''}
+          </div>
+        </a>
+      `).join('');
+
+      const pag = document.getElementById('paginacao');
+      if (data.pages > 1) {
+        pag.innerHTML = Array.from({length: data.pages}, (_, i) => i + 1).map(p =>
+          `<button onclick="loadArtigos(${p})" class="btn ${p === page ? 'btn-primary' : 'btn-outline'}" style="margin:4px;padding:8px 16px">${p}</button>`
+        ).join('');
+      }
+    } catch {
+      document.getElementById('artigos-grid').innerHTML = '<p>Erro ao carregar estudos.</p>';
+    }
+  }
+
+  async function loadArtigo(slug) {
+    try {
+      const res = await fetch(`${API}/api/artigos/${slug}`);
+      if (!res.ok) { document.getElementById('artigo-conteudo').innerHTML = '<p>Estudo não encontrado.</p>'; return; }
+      const a = await res.json();
+
+      document.title = `${a.seo_title || a.titulo} — Pastor Fabiano Gonçalves`;
+      document.getElementById('page-desc').content = a.seo_description || a.descricao || '';
+
+      // Canonical + Schema Article dinâmicos (SEO)
+      const canonicalUrl = `https://fabianogoncalves.com.br/artigos/?slug=${slug}`;
+      document.querySelector('link[rel="canonical"]')?.setAttribute('href', canonicalUrl);
+      const ld = document.createElement('script');
+      ld.type = 'application/ld+json';
+      ld.textContent = JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Article',
+        headline: a.titulo,
+        description: a.descricao || '',
+        author: { '@type': 'Person', name: 'Pastor Fabiano Gonçalves' },
+        datePublished: a.published_at ? new Date(a.published_at * 1000).toISOString() : undefined,
+        mainEntityOfPage: canonicalUrl,
+      });
+      document.head.appendChild(ld);
+
+      const tags = a.palavras_chave ? `<div class="tag-list">${a.palavras_chave.split(',').map(t => `<span class="tag">${t.trim()}</span>`).join('')}</div>` : '';
+      const data = a.published_at ? new Date(a.published_at * 1000).toLocaleDateString('pt-BR', {day:'numeric',month:'long',year:'numeric'}) : '';
+
+      document.getElementById('artigo-conteudo').innerHTML = `
+        ${a.imagem_url ? `<img src="${a.imagem_url}" alt="${a.titulo}" style="width:100%;border-radius:12px;margin-bottom:24px">` : ''}
+        <h1 style="color:var(--blue);margin-bottom:8px">${a.titulo}</h1>
+        ${a.descricao ? `<p style="font-size:1.05rem;color:var(--gray-600);margin-bottom:12px;font-style:italic">${a.descricao}</p>` : ''}
+        <p style="font-size:0.82rem;color:var(--gray-400);margin-bottom:24px">Pastor Fabiano Gonçalves${data ? ` · ${data}` : ''}</p>
+        ${tags}
+        <hr style="margin:24px 0;border:none;border-top:1px solid var(--gray-200)">
+        <div>${a.conteudo.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>').replace(/\n\n/g, '</p><p>').replace(/\n/g, '<br>')}</div>
+        <hr style="margin:40px 0;border:none;border-top:1px solid var(--gray-200)">
+        <div style="background:var(--gray-50);border-radius:12px;padding:24px;text-align:center">
+          <p style="font-weight:700;color:var(--blue);margin-bottom:12px">Gostou deste estudo? Compartilhe!</p>
+          <a href="/artigos/" class="btn btn-outline" style="margin-right:12px">← Ver outros estudos</a>
+          <a href="/instituto/chat.html" class="btn btn-primary">Falar com Agente Pastoral</a>
+        </div>
+      `;
+    } catch {
+      document.getElementById('artigo-conteudo').innerHTML = '<p>Erro ao carregar o estudo.</p>';
+    }
+  }
+</script>
+</body>
+</html>

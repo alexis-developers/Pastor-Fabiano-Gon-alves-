@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="page-title">Notícias — Pastor Fabiano Gonçalves</title>
+  <meta name="description" id="page-desc" content="Notícias e atualizações do Pastor Fabiano Gonçalves.">
+  <link rel="canonical" href="https://fabianogoncalves.com.br/noticias/">
+  <link rel="icon" href="/assets/favicon.ico">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+  <style>
+    .noticia-body { max-width: 780px; margin: 0 auto; }
+    .noticia-body img { width: 100%; border-radius: 12px; margin-bottom: 24px; }
+    .noticia-body p { margin-bottom: 16px; line-height: 1.85; color: var(--gray-600); }
+    .noticia-body h2, .noticia-body h3 { color: var(--blue); margin: 24px 0 12px; }
+  </style>
+</head>
+<body>
+
+<header class="header" id="header">
+  <div class="container">
+    <a href="/" class="header__logo">
+      <span class="logo-pastor">Pastor</span>
+      <span class="logo-name">Fabiano Gonçalves</span>
+    </a>
+    <nav>
+      <ul class="header__nav" id="nav">
+        <li><a href="/">Início</a></li>
+        <li><a href="/sobre.html">Sobre</a></li>
+        <li><a href="/mensagens.html">Mensagens</a></li>
+        <li><a href="/noticias/" class="active">Notícias</a></li>
+        <li><a href="/artigos/">Artigos</a></li>
+        <li><a href="/contato.html">Contato</a></li>
+      </ul>
+    </nav>
+    <button class="header__hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<!-- LISTAGEM -->
+<div id="view-lista">
+  <div class="page-hero">
+    <div class="container">
+      <h1>Notícias da <span class="page-hero__gold">Sua Missão</span></h1>
+      <p>Acompanhe as novidades e atualizações do Pastor Fabiano Gonçalves na sua Missão</p>
+    </div>
+  </div>
+  <section class="section">
+    <div class="container">
+      <div class="cards-grid" id="noticias-grid">
+        <div class="card"><div class="card__thumb skeleton" style="padding-top:56.25%"></div><div class="card__body"><div class="skeleton" style="height:18px;width:90%;margin-bottom:8px"></div><div class="skeleton" style="height:12px;width:70%"></div></div></div>
+        <div class="card"><div class="card__thumb skeleton" style="padding-top:56.25%"></div><div class="card__body"><div class="skeleton" style="height:18px;width:90%;margin-bottom:8px"></div><div class="skeleton" style="height:12px;width:70%"></div></div></div>
+        <div class="card"><div class="card__thumb skeleton" style="padding-top:56.25%"></div><div class="card__body"><div class="skeleton" style="height:18px;width:90%;margin-bottom:8px"></div><div class="skeleton" style="height:12px;width:70%"></div></div></div>
+      </div>
+      <div class="text-center mt-40" id="paginacao"></div>
+    </div>
+  </section>
+</div>
+
+<!-- DETALHE -->
+<div id="view-detalhe" style="display:none">
+  <div style="padding-top:var(--header-h)"></div>
+  <section class="section">
+    <div class="container">
+      <div style="margin-bottom:24px">
+        <a href="/noticias/" style="color:var(--blue);font-size:0.88rem;font-weight:600">← Voltar para Notícias</a>
+      </div>
+      <div class="noticia-body" id="noticia-conteudo">
+        <div class="skeleton" style="height:40px;width:80%;margin-bottom:16px;border-radius:4px"></div>
+        <div class="skeleton" style="height:20px;width:60%;margin-bottom:24px;border-radius:4px"></div>
+        <div class="skeleton" style="height:300px;border-radius:12px;margin-bottom:24px"></div>
+        <div class="skeleton" style="height:16px;width:100%;margin-bottom:8px;border-radius:4px"></div>
+        <div class="skeleton" style="height:16px;width:90%;margin-bottom:8px;border-radius:4px"></div>
+        <div class="skeleton" style="height:16px;width:80%;border-radius:4px"></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer__brand"><h3>Pastor Fabiano Gonçalves</h3><p>Notícias e novidades.</p></div>
+    <div class="footer__center"><div class="footer__qr"><img src="/assets/qr-contato.png" alt="QR Code"></div></div>
+    <ul class="footer__social">
+      <li><a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="white"><path d="M23.5 6.2c-.3-1-1.1-1.8-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5c-1 .3-1.8 1.1-2.1 2.1C0 8.1 0 12 0 12s0 3.9.5 5.8c.3 1 1.1 1.8 2.1 2.1 1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5c1-.3 1.8-1.1 2.1-2.1.5-1.9.5-5.8.5-5.8s0-3.9-.5-5.8zM9.7 15.5V8.5l6.3 3.5-6.3 3.5z"/></svg></a></li>
+    </ul>
+  </div>
+  <div class="footer__bottom">
+    <div class="container">
+      <p>© <span id="ano"></span> Pastor Fabiano Gonçalves.</p>
+      <p class="footer__dev">Desenvolvido por <a href="https://desenvolvimentodesites.dev.br/" target="_blank" rel="noopener">Alexis Marketing &amp; Dev</a></p>
+      <a href="/admin/" class="footer__admin-link" title="Acesso administrativo" aria-label="Admin"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg></a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const API = 'https://fabiano-api.dev-teste.workers.dev';
+  document.getElementById('ano').textContent = new Date().getFullYear();
+  document.getElementById('hamburger').addEventListener('click', () => document.getElementById('nav').classList.toggle('open'));
+
+  const slug = new URLSearchParams(location.search).get('slug');
+
+  if (slug) {
+    document.getElementById('view-lista').style.display = 'none';
+    document.getElementById('view-detalhe').style.display = 'block';
+    loadNoticia(slug);
+  } else {
+    loadNoticias(1);
+  }
+
+  async function loadNoticias(page) {
+    try {
+      const res = await fetch(`${API}/api/noticias?page=${page}`);
+      const data = await res.json();
+      const grid = document.getElementById('noticias-grid');
+      if (!data.noticias?.length) { grid.innerHTML = '<p style="grid-column:1/-1;color:var(--gray-400)">Nenhuma notícia ainda.</p>'; return; }
+      grid.innerHTML = data.noticias.map(n => `
+        <a href="/noticias/?slug=${n.slug}" class="card" style="display:block">
+          <div class="card__thumb">
+            ${n.foto_url ? `<img src="${n.foto_url}" alt="${n.titulo}" loading="lazy">` : `<div style="position:absolute;inset:0;background:var(--blue);display:flex;align-items:center;justify-content:center"><span style="color:var(--gold);font-size:2rem;font-weight:800">FG</span></div>`}
+            <div class="card__thumb-overlay"><span class="card__thumb-label">Notícia</span></div>
+          </div>
+          <div class="card__body">
+            <h3>${n.titulo}</h3>
+            ${n.subtitulo ? `<p>${n.subtitulo}</p>` : ''}
+            <p style="font-size:0.78rem;color:var(--gray-400);margin-top:8px">${new Date(n.published_at * 1000).toLocaleDateString('pt-BR')}</p>
+          </div>
+        </a>
+      `).join('');
+
+      // Paginação
+      const pag = document.getElementById('paginacao');
+      if (data.pages > 1) {
+        pag.innerHTML = Array.from({length: data.pages}, (_, i) => i + 1).map(p =>
+          `<button onclick="loadNoticias(${p})" class="btn ${p === page ? 'btn-primary' : 'btn-outline'}" style="margin:4px;padding:8px 16px">${p}</button>`
+        ).join('');
+      }
+    } catch {
+      document.getElementById('noticias-grid').innerHTML = '<p>Erro ao carregar notícias.</p>';
+    }
+  }
+
+  async function loadNoticia(slug) {
+    try {
+      const res = await fetch(`${API}/api/noticias/${slug}`);
+      if (!res.ok) { document.getElementById('noticia-conteudo').innerHTML = '<p>Notícia não encontrada.</p>'; return; }
+      const n = await res.json();
+
+      document.title = `${n.seo_title || n.titulo} — Pastor Fabiano Gonçalves`;
+      document.getElementById('page-desc').content = n.seo_description || n.subtitulo || '';
+
+      document.getElementById('noticia-conteudo').innerHTML = `
+        <h1 style="color:var(--blue);margin-bottom:8px">${n.titulo}</h1>
+        ${n.subtitulo ? `<p style="font-size:1.1rem;color:var(--gold);font-weight:600;margin-bottom:16px">${n.subtitulo}</p>` : ''}
+        <p style="font-size:0.82rem;color:var(--gray-400);margin-bottom:24px">
+          ${new Date(n.published_at * 1000).toLocaleDateString('pt-BR', {day:'numeric',month:'long',year:'numeric'})}
+        </p>
+        ${n.foto_url ? `<img src="${n.foto_url}" alt="${n.titulo}">` : ''}
+        <div>${n.conteudo.replace(/\n/g, '</p><p>')}</div>
+      `;
+    } catch {
+      document.getElementById('noticia-conteudo').innerHTML = '<p>Erro ao carregar a notícia.</p>';
+    }
+  }
+</script>
+</body>
+</html>

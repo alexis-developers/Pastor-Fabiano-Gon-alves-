@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pastor Fabiano Gonçalves — Foco, Fé e Vitória</title>
+  <meta name="description" content="Pastor Fabiano Gonçalves. Mensagens, estudos bíblicos, devocionais e o Ouvido Amigo com atendimento pastoral e psicológico.">
+  <meta name="keywords" content="Pastor Fabiano Gonçalves, pregações, estudos bíblicos, Ouvido Amigo">
+  <meta property="og:title" content="Pastor Fabiano Gonçalves">
+  <meta property="og:description" content="Foco, Fé e Vitória — Mensagens e estudos bíblicos">
+  <meta property="og:image" content="https://fabianogoncalves.com.br/assets/FABIANO.png">
+  <meta property="og:url" content="https://fabianogoncalves.com.br/">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://fabianogoncalves.com.br/">
+  <link rel="icon" href="/assets/favicon.ico" type="image/x-icon">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+  <!-- Schema.org -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Pastor Fabiano Gonçalves",
+    "jobTitle": "Pastor",
+    "url": "https://fabianogoncalves.com.br",
+    "sameAs": []
+  }
+  </script>
+</head>
+<body>
+
+<!-- ── HEADER ──────────────────────────────────────────── -->
+<header class="header" id="header">
+  <div class="container">
+    <a href="/" class="header__logo">
+      <span class="logo-pastor">Pastor</span>
+      <span class="logo-name">Fabiano Gonçalves</span>
+    </a>
+    <nav>
+      <ul class="header__nav" id="nav">
+        <li><a href="/" class="active">Início</a></li>
+        <li><a href="/sobre.html">Sobre</a></li>
+        <li><a href="/mensagens.html">Mensagens</a></li>
+        <li><a href="/noticias/">Notícias</a></li>
+        <li><a href="/artigos/">Artigos</a></li>
+        <li><a href="/contato.html">Contato</a></li>
+      </ul>
+    </nav>
+    <button class="header__hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- ── HERO ────────────────────────────────────────────── -->
+<section class="hero" id="inicio">
+  <div class="hero__blue-shape"></div>
+  <div class="container hero__grid">
+    <div class="hero__image">
+      <img
+        src="/assets/FABIANO.png"
+        alt="Pastor Fabiano Gonçalves"
+        class="hero__photo"
+        loading="eager"
+      >
+    </div>
+    <div class="hero__content">
+      <h1>
+        <span class="hero__title-blue">FOCO E FORÇA</span>
+        <span class="hero__title-gold">FÉ E VITÓRIA</span>
+      </h1>
+      <blockquote class="hero__verse">
+        <p>"Quanto a mim, esta é a minha aliança com eles", diz o Senhor. "O meu Espírito que está em você e as minhas palavras que pus em sua boca não se afastarão dela, nem da boca dos seus filhos e dos descendentes deles, desde agora e para sempre", diz o Senhor.</p>
+        <strong>Isaías 59:21</strong>
+      </blockquote>
+      <div class="hero__buttons">
+        <a href="/mensagens.html" class="btn btn-primary" id="btn-ultima-mensagem">
+          Assistir Última Mensagem
+        </a>
+        <a href="/artigos/" class="btn btn-outline">
+          Estudos Bíblicos
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ÚLTIMAS MENSAGENS ─────────────────────────────── -->
+<!-- ── ÚLTIMAS MENSAGENS + PENSAMENTO DO DIA ──────────── -->
+<section class="section home-msg-section">
+  <div class="container">
+    <div class="home-msg-grid">
+
+      <!-- Últimos Artigos -->
+      <div class="home-msg-col">
+        <h2 class="home-col-title">ÚLTIMOS ARTIGOS</h2>
+        <div class="home-artigos-list" id="artigos-grid">
+          <div class="artigo-item skeleton" style="height:80px;margin-bottom:12px"></div>
+          <div class="artigo-item skeleton" style="height:80px;margin-bottom:12px"></div>
+          <div class="artigo-item skeleton" style="height:80px"></div>
+        </div>
+        <div class="mt-24">
+          <a href="/artigos/" class="btn btn-outline">Ver Todos os Artigos</a>
+        </div>
+      </div>
+
+      <!-- Pensamento do Dia -->
+      <div class="home-msg-col">
+        <h2 class="home-col-title">PENSAMENTO DO DIA</h2>
+        <div class="pensamento-v2" id="pensamento-card">
+          <div class="pensamento-v2__quote">"</div>
+          <p class="pensamento-v2__texto" id="pensamento-texto">Carregando pensamento do dia...</p>
+          <span class="pensamento-v2__ref" id="pensamento-ref"></span>
+          <a href="/artigos/" class="btn btn-primary pensamento-v2__btn">PENSAMENTO DO DIA</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── ÚLTIMAS NOTÍCIAS ──────────────────────────────── -->
+<section class="section">
+  <div class="container">
+    <div class="section__header">
+      <h2>Últimas Notícias</h2>
+      <div class="gold-bar"></div>
+    </div>
+    <div class="cards-grid" id="noticias-grid">
+      <div class="card"><div class="card__thumb skeleton" style="padding-top:56.25%"></div><div class="card__body"><div class="skeleton" style="height:18px;width:90%;margin-bottom:8px"></div><div class="skeleton" style="height:12px;width:70%"></div></div></div>
+      <div class="card"><div class="card__thumb skeleton" style="padding-top:56.25%"></div><div class="card__body"><div class="skeleton" style="height:18px;width:90%;margin-bottom:8px"></div><div class="skeleton" style="height:12px;width:70%"></div></div></div>
+      <div class="card"><div class="card__thumb skeleton" style="padding-top:56.25%"></div><div class="card__body"><div class="skeleton" style="height:18px;width:90%;margin-bottom:8px"></div><div class="skeleton" style="height:12px;width:70%"></div></div></div>
+    </div>
+    <div class="text-center mt-24">
+      <a href="/noticias/" class="btn btn-outline">Ver Todas as Notícias</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── Ouvido Amigo — em standby, aguardando aprovação ── -->
+<section class="section section--blue" style="display:none">
+  <div class="container">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:48px;align-items:center">
+      <div>
+        <span class="hero__tag" style="background:rgba(200,169,110,0.2);color:var(--gold)">Ouvido Amigo</span>
+        <h2 style="color:var(--white);margin-top:12px">Cuidado integral —<br><span style="color:var(--gold)">fé e saúde</span> juntos</h2>
+        <p style="margin:16px 0;color:rgba(255,255,255,0.75);line-height:1.8">
+          O Ouvido Amigo oferece acolhimento pastoral
+          e atendimento psicológico profissional, integrando fé e ciência para o cuidado completo
+          do ser humano.
+        </p>
+        <p style="font-size:0.78rem;color:rgba(255,255,255,0.45);font-style:italic;margin-bottom:24px">
+          A inteligência artificial atua exclusivamente como ferramenta de apoio e acolhimento inicial,
+          não realizando diagnósticos ou substituindo profissionais habilitados.
+        </p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <a href="/instituto/agendamento.html" class="btn btn-gold">Falar com Ouvido Amigo</a>
+          <a href="/instituto/chat.html" class="btn btn-outline" style="border-color:rgba(255,255,255,0.4);color:var(--white)">Falar com Agente Pastoral</a>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <div style="background:rgba(255,255,255,0.08);border-radius:12px;padding:24px;border:1px solid rgba(255,255,255,0.12)">
+          <div style="margin-bottom:10px"><svg viewBox="0 0 24 24" fill="var(--gold)" width="28" height="28"><path d="M13 3C9.23 3 6.19 5.95 6 9.66l-1.92 2.53c-.24.31 0 .81.42.81H6v3c0 1.11.89 2 2 2h1v3h7v-4.68c2.36-1.12 4-3.53 4-6.32 0-3.87-3.13-7-7-7z"/></svg></div>
+          <h3 style="color:var(--gold);font-size:0.95rem;margin-bottom:6px">Psicologia</h3>
+          <p style="font-size:0.82rem;color:rgba(255,255,255,0.6)">Atendimento psicológico profissional com abordagem humanizada</p>
+        </div>
+        <div style="background:rgba(255,255,255,0.08);border-radius:12px;padding:24px;border:1px solid rgba(255,255,255,0.12)">
+          <div style="margin-bottom:10px"><svg viewBox="0 0 24 24" fill="var(--gold)" width="28" height="28"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg></div>
+          <h3 style="color:var(--gold);font-size:0.95rem;margin-bottom:6px">Psicanálise</h3>
+          <p style="font-size:0.82rem;color:rgba(255,255,255,0.6)">Escuta analítica e compreensão profunda do inconsciente</p>
+        </div>
+        <div style="background:rgba(255,255,255,0.08);border-radius:12px;padding:24px;border:1px solid rgba(255,255,255,0.12)">
+          <div style="margin-bottom:10px"><svg viewBox="0 0 24 24" fill="var(--gold)" width="28" height="28"><path d="M21 5c-1.11-.35-2.33-.5-3.5-.5-1.95 0-4.05.4-5.5 1.5-1.45-1.1-3.55-1.5-5.5-1.5S2.45 4.9 1 6v14.65c0 .25.25.5.5.5.1 0 .15-.05.25-.05C3.1 20.45 5.05 20 6.5 20c1.95 0 4.05.4 5.5 1.5 1.35-.85 3.8-1.5 5.5-1.5 1.65 0 3.35.3 4.75 1.05.1.05.15.05.25.05.25 0 .5-.25.5-.5V6c-.6-.45-1.25-.75-2-1zm0 13.5c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V8c1.35-.85 3.8-1.5 5.5-1.5 1.2 0 2.4.15 3.5.5v11.5z"/></svg></div>
+          <h3 style="color:var(--gold);font-size:0.95rem;margin-bottom:6px">Aconselhamento Pastoral</h3>
+          <p style="font-size:0.82rem;color:rgba(255,255,255,0.6)">Orientação baseada na Palavra de Deus e amor cristão</p>
+        </div>
+        <div style="background:rgba(255,255,255,0.08);border-radius:12px;padding:24px;border:1px solid rgba(255,255,255,0.12)">
+          <div style="margin-bottom:10px"><svg viewBox="0 0 24 24" fill="var(--gold)" width="28" height="28"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg></div>
+          <h3 style="color:var(--gold);font-size:0.95rem;margin-bottom:6px">Chat de Acolhimento</h3>
+          <p style="font-size:0.82rem;color:rgba(255,255,255,0.6)">Agente pastoral disponível para orientação inicial</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CAPTAÇÃO DE LEADS ──────────────────────────────── -->
+<section class="section">
+  <div class="container">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:48px;align-items:start">
+      <div>
+        <h2 class="text-blue">Receba mensagens,<br>estudos e devocionais</h2>
+        <div class="gold-bar" style="margin:16px 0"></div>
+        <p style="line-height:1.8">
+          Cadastre-se e receba em primeira mão as pregações do Pastor Fabiano,
+          estudos bíblicos, devocionais diários e Ouvido Amigo — suporte pastoral.
+        </p>
+        <div style="margin-top:24px;display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;align-items:center;gap:12px">
+            <div style="width:36px;height:36px;background:var(--gold);border-radius:0;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+            </div>
+            <p style="font-size:0.9rem">Pregações e mensagens em vídeo</p>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px">
+            <div style="width:36px;height:36px;background:var(--blue);border-radius:0;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14H7v-2h5v2zm5-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+            </div>
+            <p style="font-size:0.9rem">Estudos bíblicos e devocionais</p>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px">
+            <div style="width:36px;height:36px;background:var(--gold);border-radius:0;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
+            </div>
+            <p style="font-size:0.9rem">Ouvido Amigo — suporte pastoral</p>
+          </div>
+        </div>
+      </div>
+      <div class="lead-form" id="form-leads">
+        <h3>Quero me cadastrar</h3>
+        <p>Gratuitamente — sem spam, somente conteúdo de valor.</p>
+        <form id="form-lead" novalidate>
+          <div class="form-group">
+            <label for="lead-nome">Nome completo *</label>
+            <input type="text" id="lead-nome" name="nome" placeholder="Seu nome" required>
+          </div>
+          <div class="form-group">
+            <label for="lead-email">E-mail *</label>
+            <input type="email" id="lead-email" name="email" placeholder="seu@email.com" required>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="lead-whatsapp">WhatsApp</label>
+              <input type="tel" id="lead-whatsapp" name="whatsapp" placeholder="(00) 00000-0000">
+            </div>
+            <div class="form-group">
+              <label for="lead-cidade">Cidade</label>
+              <input type="text" id="lead-cidade" name="cidade" placeholder="Sua cidade">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="lead-bairro">Bairro</label>
+            <input type="text" id="lead-bairro" name="bairro" placeholder="Seu bairro">
+          </div>
+          <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center" id="btn-lead">
+            Quero Receber Conteúdo
+          </button>
+          <p style="font-size:0.7rem;color:var(--gray-400);line-height:1.5;margin-top:12px">
+            Seus dados serão utilizados exclusivamente para envio de conteúdo pastoral e devocional
+            (mensagens, estudos bíblicos e avisos do site), conforme nossa
+            <a href="/privacidade.html" style="color:var(--blue)">Política de Privacidade</a>.
+            Este cadastro não será utilizado para qualquer finalidade eleitoral ou político-partidária.
+          </p>
+          <div class="form-msg" id="lead-msg"></div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ────────────────────────────────────────── -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer__brand">
+      <h3>Pastor Fabiano Gonçalves</h3>
+      <p>Dedicado ao ensino da Palavra de Deus com foco, fé e vitória.</p>
+      <div style="margin-top:8px">
+        <a href="/artigos/" style="color:rgba(255,255,255,0.65);font-size:0.85rem;display:block;margin-bottom:6px">→ Estudos Bíblicos</a>
+        <a href="/noticias/" style="color:rgba(255,255,255,0.65);font-size:0.85rem;display:block">→ Notícias</a>
+      </div>
+    </div>
+
+    <div class="footer__center">
+      <p style="font-size:0.75rem;color:rgba(255,255,255,0.5);letter-spacing:0.08em;text-transform:uppercase">Contato via QR Code</p>
+      <div class="footer__qr">
+        <img src="/assets/qr-contato.png" alt="QR Code de contato — Pastor Fabiano Gonçalves">
+      </div>
+      <p style="font-size:0.72rem;color:rgba(255,255,255,0.4)">Aponte a câmera para falar conosco</p>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:24px;align-items:flex-end">
+      <ul class="footer__social">
+        <!-- YouTube -->
+        <li><a href="#" aria-label="YouTube" id="link-youtube">
+          <svg viewBox="0 0 24 24"><path d="M23.5 6.2c-.3-1-1.1-1.8-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5c-1 .3-1.8 1.1-2.1 2.1C0 8.1 0 12 0 12s0 3.9.5 5.8c.3 1 1.1 1.8 2.1 2.1 1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5c1-.3 1.8-1.1 2.1-2.1.5-1.9.5-5.8.5-5.8s0-3.9-.5-5.8zM9.7 15.5V8.5l6.3 3.5-6.3 3.5z"/></svg>
+        </a></li>
+        <!-- Instagram -->
+        <li><a href="#" aria-label="Instagram" id="link-instagram">
+          <svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.9.1 3.3.1 4.8 1.7 4.9 4.9.1 1.3.1 1.6.1 4.8 0 3.2 0 3.6-.1 4.8-.1 3.2-1.7 4.8-4.9 4.9-1.3.1-1.6.1-4.9.1-3.2 0-3.6 0-4.8-.1-3.3-.1-4.8-1.7-4.9-4.9C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.8C2.4 3.9 3.9 2.3 7.2 2.3c1.2-.1 1.6-.1 4.8-.1zM12 0C8.7 0 8.3 0 7.1.1 2.7.3.3 2.7.1 7.1 0 8.3 0 8.7 0 12c0 3.3 0 3.7.1 4.9.2 4.4 2.6 6.8 7 7C8.3 24 8.7 24 12 24s3.7 0 4.9-.1c4.4-.2 6.8-2.6 7-7 .1-1.2.1-1.6.1-4.9 0-3.3 0-3.7-.1-4.9C23.7 2.7 21.3.3 16.9.1 15.7 0 15.3 0 12 0zm0 5.8a6.2 6.2 0 1 0 0 12.4 6.2 6.2 0 0 0 0-12.4zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.4-11.8a1.4 1.4 0 1 0 0 2.8 1.4 1.4 0 0 0 0-2.8z"/></svg>
+        </a></li>
+        <!-- WhatsApp -->
+        <li><a href="#" aria-label="WhatsApp" id="link-whatsapp">
+          <svg viewBox="0 0 24 24"><path d="M17.5 14.4c-.3-.1-1.7-.8-1.9-.9-.3-.1-.5-.1-.7.1-.2.3-.8.9-.9 1.1-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.2-.5.1-.2 0-.4 0-.5-.1-.2-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4C8 7.9 7 8.9 7 10.8c0 1.9 1.4 3.8 1.6 4 .2.3 2.8 4.3 6.8 6 .9.4 1.7.6 2.3.8.9.3 1.8.2 2.4.1.7-.1 2.2-.9 2.5-1.8.3-.9.3-1.6.2-1.8-.1-.1-.3-.2-.6-.3zM12 0C5.4 0 0 5.4 0 12c0 2.1.6 4.1 1.5 5.8L0 24l6.3-1.6C8 23.4 10 24 12 24c6.6 0 12-5.4 12-12S18.6 0 12 0zm0 22c-1.9 0-3.7-.5-5.3-1.4l-.4-.2-3.7.9.9-3.6-.2-.4C2.5 15.7 2 13.9 2 12 2 6.5 6.5 2 12 2s10 4.5 10 10-4.5 10-10 10z"/></svg>
+        </a></li>
+        <!-- Facebook -->
+        <li><a href="#" aria-label="Facebook" id="link-facebook">
+          <svg viewBox="0 0 24 24"><path d="M24 12.1C24 5.4 18.6 0 12 0S0 5.4 0 12.1C0 18.1 4.4 23 10.1 24v-8.4H7.1V12h3V9.4c0-2.9 1.8-4.5 4.4-4.5 1.3 0 2.6.2 2.6.2v2.8h-1.5c-1.5 0-1.9.9-1.9 1.8V12h3.3l-.5 3.6h-2.8V24C19.6 23 24 18.1 24 12.1z"/></svg>
+        </a></li>
+      </ul>
+      <nav class="footer__links">
+        <a href="/sobre.html">Sobre o Pastor</a>
+        <a href="/mensagens.html">Mensagens</a>
+        <a href="/contato.html">Fale Conosco</a>
+      </nav>
+    </div>
+  </div>
+  <div class="footer__bottom">
+    <div class="container">
+      <p>© <span id="ano"></span> Pastor Fabiano Gonçalves. Todos os direitos reservados.</p>
+      <p><a href="/termos.html" style="color:rgba(255,255,255,0.5);font-size:0.8rem">Termos de Uso</a> &nbsp;·&nbsp; <a href="/privacidade.html" style="color:rgba(255,255,255,0.5);font-size:0.8rem">Política de Privacidade</a></p>
+      <p class="footer__dev">Desenvolvido por <a href="https://desenvolvimentodesites.dev.br/" target="_blank" rel="noopener">Alexis Marketing &amp; Dev</a></p>
+      <a href="/admin/" class="footer__admin-link" title="Acesso administrativo" aria-label="Admin">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+      </a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const API = 'https://fabiano-api.dev-teste.workers.dev';
+
+  // Ano automático
+  document.getElementById('ano').textContent = new Date().getFullYear();
+
+  // Hamburger
+  document.getElementById('hamburger').addEventListener('click', () => {
+    document.getElementById('nav').classList.toggle('open');
+  });
+
+  // Sombra header ao rolar
+  window.addEventListener('scroll', () => {
+    document.getElementById('header').style.boxShadow =
+      window.scrollY > 10 ? '0 4px 20px rgba(30,58,95,0.15)' : '0 2px 16px rgba(30,58,95,0.08)';
+  });
+
+  // ── Últimos Artigos ────────────────────────────────────
+  async function loadArtigos() {
+    try {
+      const res = await fetch(`${API}/api/artigos?page=1`);
+      const data = await res.json();
+      const grid = document.getElementById('artigos-grid');
+      const artigos = (data.artigos || data || []).slice(0, 3);
+      if (!artigos.length) { grid.innerHTML = '<p style="color:var(--gray-400)">Em breve.</p>'; return; }
+      grid.innerHTML = artigos.map(a => `
+        <a href="/artigos/?slug=${a.slug}" class="artigo-item">
+          <div class="artigo-item__date">${a.data_publicacao ? new Date(a.data_publicacao).toLocaleDateString('pt-BR',{day:'2-digit',month:'short',year:'numeric'}) : ''}</div>
+          <div class="artigo-item__titulo">${a.titulo}</div>
+          ${a.descricao ? `<div class="artigo-item__desc">${a.descricao.slice(0,100)}...</div>` : ''}
+        </a>
+      `).join('');
+    } catch (e) {
+      document.getElementById('artigos-grid').innerHTML = '<p style="color:var(--gray-400)">Carregando artigos...</p>';
+    }
+  }
+
+  // ── Pensamento do Dia ──────────────────────────────────
+  async function loadPensamento() {
+    try {
+      const res = await fetch(`${API}/api/pensamento`);
+      const p = await res.json();
+      const texto = document.getElementById('pensamento-texto');
+      const ref = document.getElementById('pensamento-ref');
+      if (!p) { texto.textContent = 'Nenhum pensamento cadastrado ainda.'; return; }
+      texto.classList.remove('skeleton');
+      texto.textContent = `"${p.texto}"`;
+      if (p.referencia) ref.textContent = p.referencia;
+    } catch (e) {
+      document.getElementById('pensamento-texto').textContent = 'Não foi possível carregar o pensamento.';
+    }
+  }
+
+  // ── Notícias ───────────────────────────────────────────
+  async function loadNoticias() {
+    try {
+      const res = await fetch(`${API}/api/noticias?page=1`);
+      const data = await res.json();
+      const grid = document.getElementById('noticias-grid');
+      if (!data.noticias?.length) { grid.innerHTML = '<p style="color:var(--gray-400)">Em breve.</p>'; return; }
+      grid.innerHTML = data.noticias.slice(0, 3).map(n => `
+        <a href="/noticias/?slug=${n.slug}" class="card" style="display:block;text-decoration:none">
+          <div class="card__thumb">
+            ${n.foto_url
+              ? `<img src="${n.foto_url}" alt="${n.titulo}" loading="lazy">`
+              : `<div class="skeleton" style="position:absolute;inset:0"></div>`}
+            <div class="card__thumb-overlay">
+              <span class="card__thumb-label">Notícia</span>
+            </div>
+          </div>
+          <div class="card__body">
+            <h3>${n.titulo}</h3>
+            ${n.subtitulo ? `<p>${n.subtitulo.slice(0, 80)}...</p>` : ''}
+          </div>
+        </a>
+      `).join('');
+    } catch (e) {
+      document.getElementById('noticias-grid').innerHTML = '<p style="color:var(--gray-400)">Carregando notícias...</p>';
+    }
+  }
+
+  // ── Captação de Leads ──────────────────────────────────
+  document.getElementById('form-lead').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('btn-lead');
+    const msg = document.getElementById('lead-msg');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span> Enviando...';
+    msg.className = 'form-msg';
+    msg.style.display = 'none';
+
+    const body = {
+      nome: document.getElementById('lead-nome').value.trim(),
+      email: document.getElementById('lead-email').value.trim(),
+      whatsapp: document.getElementById('lead-whatsapp').value.trim(),
+      cidade: document.getElementById('lead-cidade').value.trim(),
+      bairro: document.getElementById('lead-bairro').value.trim(),
+      origem: 'home',
+    };
+
+    try {
+      const res = await fetch(`${API}/api/leads`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        msg.textContent = 'Cadastro realizado. Você receberá nossos conteúdos em breve.';
+        msg.className = 'form-msg success';
+        e.target.reset();
+      } else {
+        msg.textContent = data.error || 'Erro ao cadastrar. Tente novamente.';
+        msg.className = 'form-msg error';
+      }
+    } catch {
+      msg.textContent = 'Erro de conexão. Verifique sua internet e tente novamente.';
+      msg.className = 'form-msg error';
+    } finally {
+      msg.style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'Quero Receber Conteúdo';
+    }
+  });
+
+  loadArtigos();
+  loadPensamento();
+  loadNoticias();
+</script>
+</body>
+</html>

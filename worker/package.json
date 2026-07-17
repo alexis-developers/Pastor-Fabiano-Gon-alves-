@@ -1,0 +1,15 @@
+{
+  "name": "fabiano-api",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "db:create": "wrangler d1 create fabiano-db",
+    "db:migrate": "wrangler d1 execute fabiano-db --file=../schema.sql",
+    "db:migrate:remote": "wrangler d1 execute fabiano-db --remote --file=../schema.sql"
+  },
+  "devDependencies": {
+    "wrangler": "^3.95.0"
+  }
+}

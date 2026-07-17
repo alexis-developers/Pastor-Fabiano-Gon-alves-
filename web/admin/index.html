@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — Pastor Fabiano Gonçalves</title>
+  <link rel="icon" href="/assets/favicon.ico">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+<!-- ── SIDEBAR ──────────────────────────────────────────── -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar__header">
+    <div class="sidebar__logo-box">
+      <svg viewBox="0 0 24 24"><path d="M3 3h7v7H3zm0 11h7v7H3zm11-11h7v7h-7zm0 11h7v7h-7z"/></svg>
+    </div>
+    <div class="sidebar__logo-text">
+      <h2>Painel Admin</h2>
+      <p>Pastor Fabiano Gonçalves</p>
+    </div>
+  </div>
+
+  <nav class="sidebar__nav">
+    <div class="nav-group-label">Principal</div>
+    <button class="nav-item active" onclick="showSection('dashboard')">
+      <svg class="nav-icon" viewBox="0 0 24 24"><path d="M3 3h7v7H3zm0 11h7v7H3zm11-11h7v7h-7zm0 11h7v7h-7z"/></svg>
+      Dashboard
+    </button>
+
+    <div class="nav-group-label">Conteúdo</div>
+    <button class="nav-item" onclick="showSection('mensagens')">
+      <svg class="nav-icon" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+      Mensagens
+    </button>
+    <button class="nav-item" onclick="showSection('pensamentos')">
+      <svg class="nav-icon" viewBox="0 0 24 24"><path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7z"/></svg>
+      Pensamento do Dia
+    </button>
+    <button class="nav-item" onclick="showSection('noticias')">
+      <svg class="nav-icon" viewBox="0 0 24 24"><path d="M20 3H4v10c0 2.21 1.79 4 4 4h6c2.21 0 4-1.79 4-4v-3h2c1.11 0 2-.89 2-2V5c0-1.11-.89-2-2-2zm0 5h-2V5h2v3zM4 19h16v2H4z"/></svg>
+      Notícias
+    </button>
+    <button class="nav-item" onclick="showSection('artigos')">
+      <svg class="nav-icon" viewBox="0 0 24 24"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/></svg>
+      Artigos Bíblicos
+    </button>
+
+    <div class="nav-group-label">Instituto</div>
+    <button class="nav-item" onclick="showSection('doutores')">
+      <svg class="nav-icon" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z"/></svg>
+      Doutores
+    </button>
+    <button class="nav-item" onclick="showSection('agenda')">
+      <svg class="nav-icon" viewBox="0 0 24 24"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>
+      Agenda
+    </button>
+    <button class="nav-item" onclick="showSection('agendamentos')">
+      <svg class="nav-icon" viewBox="0 0 24 24"><path d="M16 1H8V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-3V1zm-2 2v2h-4V3h4zm5 2v14H5V5h14z"/></svg>
+      Agendamentos
+    </button>
+
+    <div class="nav-group-label">IA &amp; CRONs</div>
+    <button class="nav-item" onclick="showSection('pdfs')">
+      <svg class="nav-icon" viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+      PDFs de Referência
+    </button>
+    <button class="nav-item" onclick="showSection('cron-logs')">
+      <svg class="nav-icon" viewBox="0 0 24 24"><path d="M13 3a9 9 0 1 0 9 9h-2c0 3.87-3.13 7-7 7s-7-3.13-7-7 3.13-7 7-7c1.93 0 3.68.79 4.94 2.06L11 11h7V4l-2.38 2.38C14.12 4.91 13.6 4.5 13 4.08V3zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>
+      Logs dos CRONs
+    </button>
+
+    <div class="nav-group-label">Leads</div>
+    <button class="nav-item" onclick="showSection('leads')">
+      <svg class="nav-icon" viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+      Contatos Captados
+    </button>
+  </nav>
+
+  <div class="sidebar__user">
+    <div class="user-avatar">FG</div>
+    <div class="user-info">
+      <span class="user-name">F. Gonçalves</span>
+      <span class="user-role">Administrador</span>
+    </div>
+    <button class="user-logout" onclick="logout()" title="Sair">
+      <svg viewBox="0 0 24 24"><path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/></svg>
+    </button>
+  </div>
+</aside>
+
+<!-- ── MAIN ─────────────────────────────────────────────── -->
+<main class="main">
+  <div class="topbar">
+    <div class="topbar__left">
+      <button class="hamburger-btn" onclick="document.getElementById('sidebar').classList.toggle('open')">
+        <svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+      </button>
+      <div>
+        <h1 id="topbar-title">Dashboard</h1>
+        <p id="topbar-date"></p>
+      </div>
+    </div>
+    <div class="topbar__right">
+      <div class="topbar__search">
+        <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+        <input type="text" placeholder="Buscar no sistema...">
+      </div>
+      <button class="topbar__icon-btn" title="Notificações">
+        <svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
+      </button>
+      <button class="topbar__icon-btn" title="Configurações">
+        <svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.57 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+      </button>
+      <button class="topbar__avatar" title="Perfil">
+        <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ── DASHBOARD ────────────────────────────────────── -->
+    <section id="section-dashboard">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-card__top">
+            <div class="stat-icon"><svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></div>
+            <span class="stat-name">Mensagens</span>
+          </div>
+          <div class="stat-card__mid">
+            <div class="stat-value" id="stat-mensagens">—</div>
+            <span class="stat-badge stat-badge--gray">Total</span>
+          </div>
+          <div class="stat-bar"><div class="stat-bar__fill" style="width:60%"></div></div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card__top">
+            <div class="stat-icon"><svg viewBox="0 0 24 24"><path d="M20 3H4v10c0 2.21 1.79 4 4 4h6c2.21 0 4-1.79 4-4v-3h2c1.11 0 2-.89 2-2V5c0-1.11-.89-2-2-2zm0 5h-2V5h2v3zM4 19h16v2H4z"/></svg></div>
+            <span class="stat-name">Notícias</span>
+          </div>
+          <div class="stat-card__mid">
+            <div class="stat-value" id="stat-noticias">—</div>
+            <span class="stat-badge stat-badge--gray">Total</span>
+          </div>
+          <div class="stat-bar"><div class="stat-bar__fill" style="width:40%"></div></div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card__top">
+            <div class="stat-icon"><svg viewBox="0 0 24 24"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/></svg></div>
+            <span class="stat-name">Artigos</span>
+          </div>
+          <div class="stat-card__mid">
+            <div class="stat-value" id="stat-artigos">—</div>
+            <span class="stat-badge stat-badge--green">Publicados</span>
+          </div>
+          <div class="stat-bar"><div class="stat-bar__fill" style="width:75%"></div></div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card__top">
+            <div class="stat-icon"><svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg></div>
+            <span class="stat-name">Leads</span>
+          </div>
+          <div class="stat-card__mid">
+            <div class="stat-value" id="stat-leads">—</div>
+            <span class="stat-badge stat-badge--green">Novos</span>
+          </div>
+          <div class="stat-bar"><div class="stat-bar__fill" style="width:80%"></div></div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card__top">
+            <div class="stat-icon stat-icon--red"><svg viewBox="0 0 24 24"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg></div>
+            <span class="stat-name">Agendamentos</span>
+          </div>
+          <div class="stat-card__mid">
+            <div class="stat-value" id="stat-agendamentos">—</div>
+            <span class="stat-badge stat-badge--red">Pendentes</span>
+          </div>
+          <div class="stat-bar"><div class="stat-bar__fill stat-bar__fill--red" style="width:30%"></div></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-header__left">
+            <h2><span class="panel-accent"></span>Artigos Pendentes de Aprovação</h2>
+            <span class="panel-badge" id="badge-pendentes" style="display:none"></span>
+          </div>
+          <button class="panel-link" onclick="showSection('artigos')">
+            Ver todos <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+          </button>
+        </div>
+        <div class="panel-body">
+          <div id="artigos-pendentes">
+            <div class="skeleton-row">
+              <div class="skeleton skeleton-thumb"></div>
+              <div class="skeleton-lines">
+                <div class="skeleton skeleton-line" style="width:70%"></div>
+                <div class="skeleton skeleton-line" style="width:50%"></div>
+                <div class="skeleton skeleton-line" style="width:35%"></div>
+              </div>
+              <div class="skeleton-actions"><div class="skeleton skeleton-btn"></div><div class="skeleton skeleton-btn"></div></div>
+            </div>
+            <div class="skeleton-row">
+              <div class="skeleton skeleton-thumb"></div>
+              <div class="skeleton-lines">
+                <div class="skeleton skeleton-line" style="width:60%"></div>
+                <div class="skeleton skeleton-line" style="width:40%"></div>
+              </div>
+              <div class="skeleton-actions"><div class="skeleton skeleton-btn"></div><div class="skeleton skeleton-btn"></div></div>
+            </div>
+            <div class="skeleton-row">
+              <div class="skeleton skeleton-thumb"></div>
+              <div class="skeleton-lines">
+                <div class="skeleton skeleton-line" style="width:75%"></div>
+                <div class="skeleton skeleton-line" style="width:30%"></div>
+              </div>
+              <div class="skeleton-actions"><div class="skeleton skeleton-btn"></div><div class="skeleton skeleton-btn"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── MENSAGENS YOUTUBE ─────────────────────────────── -->
+    <section id="section-mensagens" style="display:none">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <h2 style="color:var(--blue);font-size:1rem;font-weight:800">Mensagens (YouTube)</h2>
+        <button class="btn btn-primary" onclick="openModal('modal-mensagem');clearMensagem()">+ Nova Mensagem</button>
+      </div>
+      <div class="panel"><div class="panel-body"><div class="table-wrap">
+        <table>
+          <thead><tr><th>Título</th><th>YouTube ID</th><th>Destaque</th><th>Ações</th></tr></thead>
+          <tbody id="mensagens-tbody"><tr><td colspan="4" style="color:var(--gray-400)">Carregando...</td></tr></tbody>
+        </table>
+      </div></div></div>
+    </section>
+
+    <!-- ── PENSAMENTOS ───────────────────────────────────── -->
+    <section id="section-pensamentos" style="display:none">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <h2 style="color:var(--blue);font-size:1rem;font-weight:800">Pensamento do Dia</h2>
+        <button class="btn btn-primary" onclick="openModal('modal-pensamento')">+ Novo Pensamento</button>
+      </div>
+      <div class="panel"><div class="panel-body"><div class="table-wrap">
+        <table>
+          <thead><tr><th>Texto</th><th>Referência</th><th>Data Exibição</th><th>Ações</th></tr></thead>
+          <tbody id="pensamentos-tbody"><tr><td colspan="4" style="color:var(--gray-400)">Carregando...</td></tr></tbody>
+        </table>
+      </div></div></div>
+    </section>
+
+    <!-- ── NOTÍCIAS ──────────────────────────────────────── -->
+    <section id="section-noticias" style="display:none">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <h2 style="color:var(--blue);font-size:1rem;font-weight:800">Notícias</h2>
+        <button class="btn btn-primary" onclick="openModal('modal-noticia');clearNoticia()">+ Nova Notícia</button>
+      </div>
+      <div class="panel"><div class="panel-body"><div class="table-wrap">
+        <table>
+          <thead><tr><th>Título</th><th>Subtítulo</th><th>Status</th><th>Data</th><th>Ações</th></tr></thead>
+          <tbody id="noticias-tbody"><tr><td colspan="5" style="color:var(--gray-400)">Carregando...</td></tr></tbody>
+        </table>
+      </div></div></div>
+    </section>
+
+    <!-- ── ARTIGOS ───────────────────────────────────────── -->
+    <section id="section-artigos" style="display:none">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <h2 style="color:var(--blue);font-size:1rem;font-weight:800">Artigos Bíblicos</h2>
+        <button class="btn btn-primary" onclick="openModal('modal-artigo');clearArtigo()">+ Novo Artigo</button>
+      </div>
+      <div style="display:flex;gap:8px;margin-bottom:16px">
+        <button class="btn btn-sm btn-outline" onclick="filterArtigos('')">Todos</button>
+        <button class="btn btn-sm btn-outline" onclick="filterArtigos('pendente')">⏳ Pendentes</button>
+        <button class="btn btn-sm btn-outline" onclick="filterArtigos('publicado')">Publicados</button>
+        <button class="btn btn-sm btn-outline" onclick="filterArtigos('rejeitado')">Rejeitados</button>
+      </div>
+      <div class="panel"><div class="panel-body"><div class="table-wrap">
+        <table>
+          <thead><tr><th>Título</th><th>Status</th><th>Palavras-chave</th><th>Data</th><th>Ações</th></tr></thead>
+          <tbody id="artigos-tbody"><tr><td colspan="5" style="color:var(--gray-400)">Carregando...</td></tr></tbody>
+        </table>
+      </div></div></div>
+    </section>
+
+    <!-- ── DOUTORES ──────────────────────────────────────── -->
+    <section id="section-doutores" style="display:none">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <h2 style="color:var(--blue);font-size:1rem;font-weight:800">Doutores — Ouvido Amigo</h2>
+        <button class="btn btn-primary" onclick="openModal('modal-doutor');clearDoutor()">+ Cadastrar Doutor</button>
+      </div>
+      <div id="doutores-cards" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px">
+        <div style="color:var(--gray-400)">Carregando...</div>
+      </div>
+    </section>
+
+    <!-- ── AGENDA ────────────────────────────────────────── -->
+    <section id="section-agenda" style="display:none">
+      <h2 style="color:var(--blue);font-size:1rem;font-weight:800;margin-bottom:16px">Configurar Agenda</h2>
+      <div class="panel" style="margin-bottom:16px">
+        <div class="panel-header"><div class="panel-header__left"><h2><span class="panel-accent"></span>Selecionar Doutor</h2></div></div>
+        <div class="panel-body">
+          <select id="agenda-doutor-select" onchange="loadAgendaDoutor(this.value)" style="padding:8px 12px;border:1.5px solid var(--gray-200);border-radius:8px;font-family:inherit;font-size:0.88rem;min-width:260px">
+            <option value="">— escolha um doutor —</option>
+          </select>
+        </div>
+      </div>
+      <div id="agenda-config" style="display:none">
+        <div class="panel" style="margin-bottom:16px">
+          <div class="panel-header">
+            <div class="panel-header__left"><h2><span class="panel-accent"></span>Disponibilidade Semanal</h2></div>
+            <button class="btn btn-primary btn-sm" onclick="saveDisponibilidade()">Salvar Disponibilidade</button>
+          </div>
+          <div class="panel-body">
+            <p style="font-size:0.82rem;color:var(--gray-400);margin-bottom:20px">Marque os dias e defina os horários de atendimento.</p>
+            <div id="disponibilidade-form"></div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-header__left"><h2><span class="panel-accent"></span>Datas Bloqueadas</h2></div>
+            <button class="btn btn-gold btn-sm" onclick="openModal('modal-bloqueio')">+ Bloquear Data</button>
+          </div>
+          <div class="panel-body"><div class="table-wrap">
+            <table>
+              <thead><tr><th>Data</th><th>Motivo</th><th>Ação</th></tr></thead>
+              <tbody id="bloqueios-tbody"></tbody>
+            </table>
+          </div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── AGENDAMENTOS ──────────────────────────────────── -->
+    <section id="section-agendamentos" style="display:none">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px">
+        <h2 style="color:var(--blue);font-size:1rem;font-weight:800">Agendamentos</h2>
+        <div style="display:flex;gap:8px">
+          <input type="date" id="filtro-data-ag" onchange="loadAgendamentos()" style="padding:7px 10px;border:1.5px solid var(--gray-200);border-radius:8px;font-family:inherit;font-size:0.82rem">
+          <select id="filtro-status-ag" onchange="loadAgendamentos()" style="padding:7px 10px;border:1.5px solid var(--gray-200);border-radius:8px;font-family:inherit;font-size:0.82rem">
+            <option value="">Todos status</option>
+            <option>pendente</option><option>confirmado</option><option>cancelado</option><option>realizado</option>
+          </select>
+        </div>
+      </div>
+      <div class="panel"><div class="panel-body"><div class="table-wrap">
+        <table>
+          <thead><tr><th>Paciente</th><th>Doutor</th><th>Data</th><th>Hora</th><th>WhatsApp</th><th>Status</th><th>Ação</th></tr></thead>
+          <tbody id="agendamentos-tbody"></tbody>
+        </table>
+      </div></div></div>
+    </section>
+
+    <!-- ── PDFs ──────────────────────────────────────────── -->
+    <section id="section-pdfs" style="display:none">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <h2 style="color:var(--blue);font-size:1rem;font-weight:800">PDFs de Referência para IA</h2>
+        <button class="btn btn-primary" onclick="openModal('modal-pdf')">+ Adicionar PDF</button>
+      </div>
+      <div class="panel" style="margin-bottom:16px">
+        <div class="panel-body">
+          <p style="font-size:0.85rem;color:var(--gray-600);line-height:1.7">Os PDFs cadastrados aqui alimentam os CRONs de IA com conteúdo de referência. Extraia o texto e cole aqui para que os agentes usem como contexto.</p>
+        </div>
+      </div>
+      <div class="panel"><div class="panel-body"><div class="table-wrap">
+        <table>
+          <thead><tr><th>Título</th><th>Tipo</th><th>Data</th><th>Ação</th></tr></thead>
+          <tbody id="pdfs-tbody"></tbody>
+        </table>
+      </div></div></div>
+    </section>
+
+    <!-- ── CRON LOGS ─────────────────────────────────────── -->
+    <section id="section-cron-logs" style="display:none">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <h2 style="color:var(--blue);font-size:1rem;font-weight:800">Logs dos CRONs</h2>
+        <select id="filtro-cron" onchange="loadCronLogs()" style="padding:7px 10px;border:1.5px solid var(--gray-200);border-radius:8px;font-family:inherit;font-size:0.82rem">
+          <option value="">Todos</option>
+          <option>pastoral</option><option>seo</option><option>social</option><option>suporte</option><option>analytics</option>
+        </select>
+      </div>
+      <div class="panel"><div class="panel-body"><div class="table-wrap">
+        <table>
+          <thead><tr><th>CRON</th><th>Status</th><th>Modelo IA</th><th>Mensagem</th><th>Data</th></tr></thead>
+          <tbody id="cron-logs-tbody"></tbody>
+        </table>
+      </div></div></div>
+    </section>
+
+    <!-- ── LEADS ─────────────────────────────────────────── -->
+    <section id="section-leads" style="display:none">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px">
+        <h2 style="color:var(--blue);font-size:1rem;font-weight:800">Contatos Captados</h2>
+        <div style="display:flex;gap:8px">
+          <input type="text" id="filtro-cidade" placeholder="Filtrar por cidade..." style="padding:7px 12px;border:1.5px solid var(--gray-200);border-radius:8px;font-family:inherit;font-size:0.82rem">
+          <button class="btn btn-outline btn-sm" onclick="loadLeads()">Buscar</button>
+          <button class="btn btn-gold btn-sm" onclick="exportLeads()">⬇ Exportar CSV</button>
+        </div>
+      </div>
+      <div class="panel"><div class="panel-body"><div class="table-wrap">
+        <table>
+          <thead><tr><th>Nome</th><th>Email</th><th>WhatsApp</th><th>Cidade</th><th>Bairro</th><th>Origem</th><th>Data</th></tr></thead>
+          <tbody id="leads-tbody"></tbody>
+        </table>
+      </div></div></div>
+      <div style="margin-top:16px;display:flex;gap:8px;justify-content:center" id="leads-paginacao"></div>
+    </section>
+
+  </div>
+</main>
+
+<!-- ══ MODAIS ══════════════════════════════════════════════ -->
+
+<!-- Modal Mensagem YouTube -->
+<div class="modal-overlay" id="modal-mensagem">
+  <div class="modal">
+    <div class="modal-header"><h3 id="modal-mensagem-title">Nova Mensagem</h3><button class="modal-close" onclick="closeModal('modal-mensagem')">✕</button></div>
+    <div class="modal-body">
+      <input type="hidden" id="mensagem-id">
+      <div class="form-group"><label>Título *</label><input type="text" id="mensagem-titulo" placeholder="Título da pregação"></div>
+      <div class="form-group"><label>YouTube ID *</label><input type="text" id="mensagem-yt" placeholder="Ex: dQw4w9WgXcQ (parte final da URL)"><p style="font-size:0.72rem;color:var(--gray-400);margin-top:4px">youtube.com/watch?v=<strong>ESTE_ID</strong></p></div>
+      <div class="form-group"><label>Descrição</label><textarea id="mensagem-desc" rows="2"></textarea></div>
+      <div class="form-group"><label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input type="checkbox" id="mensagem-destaque" style="width:auto"> Marcar como destaque (hero da Home)</label></div>
+      <div id="mensagem-preview" style="margin-top:12px;display:none"><img id="mensagem-thumb" src="" alt="" style="width:100%"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-mensagem')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveMensagem()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Pensamento -->
+<div class="modal-overlay" id="modal-pensamento">
+  <div class="modal">
+    <div class="modal-header"><h3>Pensamento do Dia</h3><button class="modal-close" onclick="closeModal('modal-pensamento')">✕</button></div>
+    <div class="modal-body">
+      <div class="form-group"><label>Texto *</label><textarea id="pensamento-texto" rows="4" placeholder="Texto do pensamento ou versículo..."></textarea></div>
+      <div class="form-row">
+        <div class="form-group"><label>Referência bíblica</label><input type="text" id="pensamento-ref" placeholder="Ex: João 3:16"></div>
+        <div class="form-group"><label>Data de exibição</label><input type="date" id="pensamento-data"><p style="font-size:0.72rem;color:var(--gray-400);margin-top:4px">Vazio = exibição aleatória</p></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-pensamento')">Cancelar</button>
+      <button class="btn btn-primary" onclick="savePensamento()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Notícia -->
+<div class="modal-overlay" id="modal-noticia">
+  <div class="modal" style="max-width:700px">
+    <div class="modal-header"><h3 id="modal-noticia-title">Nova Notícia</h3><button class="modal-close" onclick="closeModal('modal-noticia')">✕</button></div>
+    <div class="modal-body">
+      <input type="hidden" id="noticia-id">
+      <div class="form-group"><label>Título *</label><input type="text" id="noticia-titulo"></div>
+      <div class="form-group"><label>Subtítulo</label><input type="text" id="noticia-subtitulo" placeholder="Chamada ou subtítulo da notícia"></div>
+      <div class="form-group">
+        <label>Foto</label>
+        <div style="display:flex;gap:8px;align-items:center">
+          <input type="text" id="noticia-foto" placeholder="URL da foto ou faça upload" oninput="previewImg('noticia-foto','noticia-foto-preview')">
+          <label class="btn btn-outline btn-sm" style="cursor:pointer">Upload <input type="file" accept="image/*" style="display:none" onchange="uploadImagem(this,'noticia-foto')"></label>
+        </div>
+        <img id="noticia-foto-preview" src="" alt="" style="margin-top:8px;max-height:120px;border-radius:8px;display:none">
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>SEO Title</label><input type="text" id="noticia-seo-title"></div>
+        <div class="form-group"><label>SEO Description</label><input type="text" id="noticia-seo-desc"></div>
+      </div>
+      <div class="form-group">
+        <label>Conteúdo *</label>
+        <div class="editor-toolbar">
+          <button onmousedown="e=>e.preventDefault()" onclick="document.execCommand('bold')"><b>B</b></button>
+          <button onclick="document.execCommand('italic')"><i>I</i></button>
+          <button onclick="document.execCommand('formatBlock',false,'h2')">H2</button>
+          <button onclick="document.execCommand('formatBlock',false,'p')">P</button>
+        </div>
+        <div class="editor" id="noticia-conteudo" contenteditable="true"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-noticia')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveNoticia()">Publicar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Artigo -->
+<div class="modal-overlay" id="modal-artigo">
+  <div class="modal" style="max-width:700px">
+    <div class="modal-header"><h3 id="modal-artigo-title">Artigo Bíblico</h3><button class="modal-close" onclick="closeModal('modal-artigo')">✕</button></div>
+    <div class="modal-body">
+      <input type="hidden" id="artigo-id">
+      <div class="form-group"><label>Título *</label><input type="text" id="artigo-titulo"></div>
+      <div class="form-group"><label>Resumo</label><textarea id="artigo-desc" rows="2"></textarea></div>
+      <div class="form-group"><label>Palavras-chave (separadas por vírgula)</label><input type="text" id="artigo-kw" placeholder="fé, oração, Bíblia, salvação"></div>
+      <div class="form-row">
+        <div class="form-group"><label>SEO Title</label><input type="text" id="artigo-seo-title"></div>
+        <div class="form-group"><label>SEO Description</label><input type="text" id="artigo-seo-desc"></div>
+      </div>
+      <div class="form-group">
+        <label>Conteúdo *</label>
+        <div class="editor-toolbar">
+          <button onclick="document.execCommand('bold')"><b>B</b></button>
+          <button onclick="document.execCommand('italic')"><i>I</i></button>
+          <button onclick="document.execCommand('formatBlock',false,'h2')">H2</button>
+          <button onclick="document.execCommand('formatBlock',false,'h3')">H3</button>
+          <button onclick="document.execCommand('formatBlock',false,'blockquote')">❝</button>
+          <button onclick="document.execCommand('formatBlock',false,'p')">P</button>
+        </div>
+        <div class="editor" id="artigo-conteudo" contenteditable="true"></div>
+      </div>
+      <div class="form-group">
+        <label>Status</label>
+        <select id="artigo-status">
+          <option value="rascunho">Rascunho</option>
+          <option value="publicado">Publicado</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-artigo')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveArtigo()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Doutor -->
+<div class="modal-overlay" id="modal-doutor">
+  <div class="modal">
+    <div class="modal-header"><h3 id="modal-doutor-title">Cadastrar Doutor</h3><button class="modal-close" onclick="closeModal('modal-doutor')">✕</button></div>
+    <div class="modal-body">
+      <input type="hidden" id="doutor-id">
+      <div class="form-group"><label>Nome *</label><input type="text" id="doutor-nome"></div>
+      <div class="form-group"><label>Especialidade *</label>
+        <select id="doutor-esp"><option>Psicólogo</option><option>Psicanalista</option><option>Psiquiatra</option><option>Aconselhador Pastoral</option></select>
+      </div>
+      <div class="form-group"><label>Registro (CRP/CRM)</label><input type="text" id="doutor-crp" placeholder="CRP 00/00000"></div>
+      <div class="form-group">
+        <label>Foto</label>
+        <div style="display:flex;gap:8px;align-items:center">
+          <input type="text" id="doutor-foto" placeholder="URL da foto">
+          <label class="btn btn-outline btn-sm" style="cursor:pointer">Upload <input type="file" accept="image/*" style="display:none" onchange="uploadImagem(this,'doutor-foto')"></label>
+        </div>
+      </div>
+      <div class="form-group"><label>Bio</label><textarea id="doutor-bio" rows="3" placeholder="Breve apresentação profissional"></textarea></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-doutor')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveDoutor()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Bloqueio de Data -->
+<div class="modal-overlay" id="modal-bloqueio">
+  <div class="modal" style="max-width:400px">
+    <div class="modal-header"><h3>Bloquear Data</h3><button class="modal-close" onclick="closeModal('modal-bloqueio')">✕</button></div>
+    <div class="modal-body">
+      <div class="form-group"><label>Data *</label><input type="date" id="bloqueio-data"></div>
+      <div class="form-group"><label>Motivo</label><input type="text" id="bloqueio-motivo" placeholder="Ex: Feriado, Férias, Congresso..."></div>
+      <div class="form-group"><label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input type="checkbox" id="bloqueio-todos" style="width:auto"> Bloquear todos os doutores</label></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-bloqueio')">Cancelar</button>
+      <button class="btn btn-danger" onclick="saveBloqueio()">Bloquear Data</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal PDF -->
+<div class="modal-overlay" id="modal-pdf">
+  <div class="modal" style="max-width:640px">
+    <div class="modal-header"><h3>Adicionar PDF de Referência</h3><button class="modal-close" onclick="closeModal('modal-pdf')">✕</button></div>
+    <div class="modal-body">
+      <div class="form-group"><label>Título *</label><input type="text" id="pdf-titulo" placeholder="Nome do documento"></div>
+      <div class="form-group"><label>Tipo</label>
+        <select id="pdf-tipo"><option value="referencia">Referência</option><option value="estudo">Estudo</option><option value="devocional">Devocional</option><option value="pregacao">Pregação</option></select>
+      </div>
+      <div class="form-group"><label>Chave R2 (após upload)</label><input type="text" id="pdf-key" placeholder="chave-no-bucket.pdf"></div>
+      <div class="form-group">
+        <label>Texto Extraído do PDF</label>
+        <p style="font-size:0.78rem;color:var(--gray-400);margin-bottom:6px">Extraia o texto do PDF e cole aqui. Os CRONs de IA usarão como contexto.</p>
+        <textarea id="pdf-conteudo" rows="8" placeholder="Cole o conteúdo do PDF aqui..."></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-pdf')">Cancelar</button>
+      <button class="btn btn-primary" onclick="savePdf()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script src="admin.js"></script>
+</body>
+</html>

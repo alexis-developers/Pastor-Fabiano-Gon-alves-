@@ -1,0 +1,43 @@
+name = "fabiano-api"
+main = "src/index.js"
+compatibility_date = "2024-09-23"
+compatibility_flags = ["nodejs_compat"]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "fabiano-db"
+database_id = "797e5d9e-9bd0-48d4-8c70-e8456afdcefa"
+
+[[r2_buckets]]
+binding = "IMAGENS"
+bucket_name = "fabiano-imagens"
+
+[ai]
+binding = "AI"
+
+[vars]
+ENVIRONMENT = "production"
+SITE_URL = "https://fabianogoncalves.com.br"
+CORS_ORIGINS = "https://fabianogoncalves.com.br,https://www.fabianogoncalves.com.br"
+
+# Secrets (configurar via: wrangler secret put NOME)
+# ADMIN_TOKEN         → token secreto para autenticar o admin
+# TELEGRAM_BOT_TOKEN  → token do bot de aprovação de artigos
+# TELEGRAM_GROUP_ID   → ID do grupo de aprovação
+
+[triggers]
+crons = [
+  "0 9 * * *",
+  "0 15 * * *",
+  "0 14 * * *",
+  "0 15 * * 1",
+  "0 16 * * 1",
+  "0 17 * * *"
+]
+# cron map:
+# "0 9  * * *"  = pastoral    (diário 06:00 BRT = 09:00 UTC)
+# "0 15 * * *"  = seo         (diário 12:00 BRT = 15:00 UTC)
+# "0 14 * * *"  = social      (diário 11:00 BRT)
+# "0 15 * * 1"  = suporte     (segunda 12:00 BRT)
+# "0 16 * * 1"  = analytics   (segunda 13:00 BRT)
+# "0 17 * * *"  = security    (diário 14:00 BRT)
