@@ -275,7 +275,7 @@ export default {
     // cron map — alterar horários em wrangler.toml se necessário
     const map = {
       '0 9 * * *': cronPastoral,
-      '0 15 * * *': cronSeo,
+      '0 15 * * 1,4': cronSeo,
       '0 14 * * *': cronSocial,
       '0 15 * * 1': cronSuportte,
       '0 16 * * 1': cronAnalytics,

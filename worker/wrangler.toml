@@ -28,7 +28,7 @@ CORS_ORIGINS = "https://fabianogoncalves.com.br,https://www.fabianogoncalves.com
 [triggers]
 crons = [
   "0 9 * * *",
-  "0 15 * * *",
+  "0 15 * * 1,4",
   "0 14 * * *",
   "0 15 * * 1",
   "0 16 * * 1",
@@ -36,7 +36,7 @@ crons = [
 ]
 # cron map:
 # "0 9  * * *"  = pastoral    (diário 06:00 BRT = 09:00 UTC)
-# "0 15 * * *"  = seo         (diário 12:00 BRT = 15:00 UTC)
+# "0 15 * * 1,4" = seo        (segunda e quinta 12:00 BRT = 15:00 UTC)
 # "0 14 * * *"  = social      (diário 11:00 BRT)
 # "0 15 * * 1"  = suporte     (segunda 12:00 BRT)
 # "0 16 * * 1"  = analytics   (segunda 13:00 BRT)
