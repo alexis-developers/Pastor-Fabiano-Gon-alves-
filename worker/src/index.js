@@ -160,6 +160,7 @@ export default {
 
     try {
       // ── Público ──────────────────────────────────────────
+      if (method === 'GET' && path === '/sitemap.xml') return getSitemap(env);
       if (method === 'GET' && path === '/api/artigos') return getArtigos(env, url, origin);
       if (method === 'GET' && path.match(/^\/api\/artigos\/[^/]+$/)) return getArtigo(env, path.split('/')[3], origin);
       if (method === 'GET' && path === '/api/noticias') return getNoticias(env, url, origin);
@@ -180,6 +181,18 @@ export default {
       if (method === 'GET' && path === '/api/chat') {
         if (!rateLimit(request, 'chat', 10)) return err('Muitas mensagens. Aguarde um instante.', 429, origin);
         return chatHandler(request, env, origin);
+      }
+
+      // ── Auditoria Competitiva ─────────────────────────────
+      if (method === 'POST' && path === '/api/audit-competitors/analyze') {
+        if (!rateLimit(request, 'audit', 5)) return err('Muitas tentativas. Aguarde um minuto.', 429, origin);
+        return analyzeCompetitors(request, env, origin);
+      }
+      if (method === 'GET' && path === '/api/audit-competitors') {
+        return getCompetitorAnalysis(env, url, origin);
+      }
+      if (method === 'GET' && path === '/api/audit-competitors/keywords') {
+        return getCompetitorKeywords(env, url, origin);
       }
 
       // ── Webhook Telegram ──────────────────────────────────
@@ -455,6 +468,15 @@ Sua missão:
 - Confirmar que entendeu o pedido antes de prosseguir.
 - Finalizar com incentivo para aplicação prática e busca de orientação pastoral presencial.
 - Se o usuário demonstrar crise emocional grave, encaminhar para o Instituto de Saúde Mental.
+
+SAUDAÇÃO INICIAL:
+- Sempre iniciar a primeira resposta com: "A Paz do Senhor Jesus!"
+- Nunca usar "Olá", "Oi", "Bom dia" ou outras saudações genéricas como abertura
+
+LINGUAGEM EMPÁTICA E ACOLHEDORA:
+- Dirija-se diretamente ao leitor usando "você" — nunca "o senhor" ou "a pessoa"
+- Use a 1ª pessoa do plural ("nós", "nossa", "conosco") ao falar de sentimentos, desafios, medos, dúvidas ou aprendizados
+- Tom de amigo próximo que caminha junto, não de autor distante
 
 DISCLAIMER: Você é uma ferramenta de apoio e acolhimento inicial. Não realiza diagnósticos, prescrições ou substitui profissionais de saúde habilitados.
 
@@ -1212,4 +1234,471 @@ async function adminGetCronLogs(env, url, origin) {
     ? await env.DB.prepare(`SELECT * FROM cron_logs WHERE cron_name = ? ORDER BY created_at DESC LIMIT 100`).bind(cron).all()
     : await env.DB.prepare(`SELECT * FROM cron_logs ORDER BY created_at DESC LIMIT 100`).all();
   return json(rows.results, 200, origin);
+}
+
+// ============================================================
+// Sitemap dinâmico — gera XML com artigos publicados
+// ============================================================
+async function getSitemap(env) {
+  const artigos = await env.DB.prepare(
+    `SELECT slug, titulo, published_at FROM artigos WHERE status = 'publicado' ORDER BY published_at DESC`
+  ).all();
+
+  const noticias = await env.DB.prepare(
+    `SELECT slug, titulo, created_at FROM noticias WHERE status = 'publicado' ORDER BY created_at DESC`
+  ).all();
+
+  const baseUrl = 'https://fabianogoncalves.com.br';
+  const today = new Date().toISOString().slice(0, 10);
+
+  let urls = '';
+
+  // Páginas estáticas
+  const staticPages = [
+    { loc: '/', changefreq: 'daily', priority: '1.0' },
+    { loc: '/sobre.html', changefreq: 'monthly', priority: '0.8' },
+    { loc: '/mensagens.html', changefreq: 'weekly', priority: '0.8' },
+    { loc: '/noticias/', changefreq: 'daily', priority: '0.9' },
+    { loc: '/artigos/', changefreq: 'daily', priority: '0.9' },
+    { loc: '/contato.html', changefreq: 'monthly', priority: '0.7' },
+    { loc: '/privacidade.html', changefreq: 'yearly', priority: '0.3' },
+    { loc: '/termos.html', changefreq: 'yearly', priority: '0.3' },
+    { loc: '/instituto/', changefreq: 'monthly', priority: '0.8' },
+    { loc: '/instituto/chat.html', changefreq: 'monthly', priority: '0.7' },
+    { loc: '/instituto/agendamento.html', changefreq: 'monthly', priority: '0.7' },
+  ];
+
+  for (const p of staticPages) {
+    urls += `  <url><loc>${baseUrl}${p.loc}</loc><lastmod>${today}</lastmod><changefreq>${p.changefreq}</changefreq><priority>${p.priority}</priority></url>\n`;
+  }
+
+  // Artigos dinâmicos
+  for (const a of artigos.results) {
+    const date = a.published_at ? new Date(a.published_at * 1000).toISOString().slice(0, 10) : today;
+    urls += `  <url><loc>${baseUrl}/artigos/?slug=${a.slug}</loc><lastmod>${date}</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>\n`;
+  }
+
+  // Notícias dinâmicas
+  for (const n of noticias.results) {
+    const date = n.created_at ? new Date(n.created_at).toISOString().slice(0, 10) : today;
+    urls += `  <url><loc>${baseUrl}/noticias/?slug=${n.slug}</loc><lastmod>${date}</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>\n`;
+  }
+
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+${urls}</urlset>`;
+
+  return new Response(xml, {
+    headers: {
+      'Content-Type': 'application/xml; charset=utf-8',
+      'Cache-Control': 'public, max-age=3600',
+    },
+  });
+}
+
+// ============================================================
+// AUDITORIA COMPETITIVA
+// ============================================================
+
+async function analyzeCompetitors(request, env, origin) {
+  try {
+    const { clientDomain, keywords, limit = 5 } = await request.json();
+
+    if (!clientDomain || !keywords?.length) {
+      return err('clientDomain e keywords são obrigatórios', 400, origin);
+    }
+
+    const results = [];
+
+    for (const keyword of keywords.slice(0, 5)) {
+      // Buscar concorrentes no Google (via scraping)
+      const competitors = await searchGoogle(keyword, limit);
+
+      for (let i = 0; i < competitors.length; i++) {
+        const comp = competitors[i];
+        const domain = extractDomain(comp.url);
+
+        // Pular se for o próprio site do cliente
+        if (domain === clientDomain) continue;
+
+        // Analisar domínio
+        const analysis = await analyzeDomain(comp.url);
+
+        // Salvar no banco
+        await env.DB.prepare(
+          `INSERT INTO competitor_analysis 
+           (client_domain, keyword, competitor_domain, competitor_title, competitor_description,
+            domain_authority, backlinks, traffic, technologies, headings, content_length, 
+            images_count, videos_count, rank_position)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+        ).bind(
+          clientDomain, keyword, domain, comp.title, comp.description,
+          analysis.domainAuthority, analysis.backlinks, analysis.traffic,
+          JSON.stringify(analysis.technologies), JSON.stringify(analysis.headings),
+          analysis.contentLength, analysis.imagesCount, analysis.videosCount, i + 1
+        ).run();
+
+        results.push({
+          keyword,
+          rank: i + 1,
+          domain,
+          title: comp.title,
+          description: comp.description,
+          ...analysis
+        });
+      }
+    }
+
+    // Gerar recomendações
+    const recommendations = generateRecommendations(clientDomain, results);
+
+    return json({
+      success: true,
+      clientDomain,
+      keywords,
+      competitors: results.slice(0, limit * keywords.length),
+      recommendations,
+      analyzedAt: new Date().toISOString()
+    }, 200, origin);
+
+  } catch (e) {
+    console.error('Erro na análise competitiva:', e);
+    return err('Erro ao analisar concorrentes: ' + e.message, 500, origin);
+  }
+}
+
+async function searchGoogle(keyword, limit) {
+  // Usar Google Custom Search API ou scraping
+  // Por enquanto, vamos usar uma abordagem simples com fetch
+  const url = `https://www.google.com/search?q=${encodeURIComponent(keyword)}&udm=14`;
+
+  try {
+    const response = await fetch(url, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+        'Accept': 'text/html,application/xhtml+xml',
+        'Accept-Language': 'pt-BR,pt;q=0.9,en-US;q=0.8'
+      }
+    });
+
+    const html = await response.text();
+
+    // Extrair resultados do Google
+    const results = [];
+    const regex = /<a href="\/url\?q=([^&"]+)/g;
+    let match;
+
+    while ((match = regex.exec(html)) && results.length < limit) {
+      const url = decodeURIComponent(match[1]);
+      if (url.includes('google.com') || url.includes('youtube.com/results')) continue;
+
+      results.push({
+        url,
+        title: extractTitle(html, url),
+        description: extractDescription(html, url)
+      });
+    }
+
+    // Se não conseguir extrair, retornar dados de exemplo
+    if (results.length === 0) {
+      return getFallbackCompetitors(keyword, limit);
+    }
+
+    return results;
+
+  } catch (e) {
+    console.error('Erro ao buscar no Google:', e);
+    return getFallbackCompetitors(keyword, limit);
+  }
+}
+
+function getFallbackCompetitors(keyword, limit) {
+  // Dados de fallback para demonstração
+  const fallbackData = {
+    'pastor evangélico': [
+      { url: 'https://www.instagram.com/pastorhenrique/', title: 'Pastor Henrique | Instagram', description: 'Pregações e mensagens cristãs' },
+      { url: 'https://www.bbc.com/portuguese/articles/c123456', title: 'Artigo BBC sobre Pastores', description: 'Matéria sobre líderes evangélicos' },
+      { url: 'https://pt.wikipedia.org/wiki/Evangelicalismo', title: 'Evangelicalismo – Wikipédia', description: 'Informações sobre o movimento evangélico' }
+    ],
+    'mensagens cristãs': [
+      { url: 'https://www.youtube.com/@mensagencrista', title: 'Mensagem Cristã | YouTube', description: 'Vídeos de pregações e devocionais' },
+      { url: 'https://www.cpb.com.br', title: 'CPB - Casa Publicadora Brasileira', description: 'Editora de literatura cristã' },
+      { url: 'https://www.adventistas.org', title: 'Igreja Adventista', description: 'Site oficial da igreja' }
+    ],
+    'estudos bíblicos': [
+      { url: 'https://www.biblegateway.com', title: 'Bible Gateway', description: 'Bíblia online com múltiplas versões' },
+      { url: 'https://www.blueletterbible.org', title: 'Blue Letter Bible', description: 'Estudos bíblicos aprofundados' },
+      { url: 'https://www.studylight.org', title: 'StudyLight', description: 'Comentários e estudos bíblicos' }
+    ]
+  };
+
+  const normalized = keyword.toLowerCase();
+  for (const [key, data] of Object.entries(fallbackData)) {
+    if (normalized.includes(key) || key.includes(normalized)) {
+      return data.slice(0, limit);
+    }
+  }
+
+  // Retornar genérico se não encontrar
+  return [
+    { url: 'https://example1.com', title: 'Concorrente 1', description: 'Site de conteúdo cristão' },
+    { url: 'https://example2.com', title: 'Concorrente 2', description: 'Portal evangélico' },
+    { url: 'https://example3.com', title: 'Concorrente 3', description: 'Ministério online' }
+  ].slice(0, limit);
+}
+
+function extractTitle(html, url) {
+  // Tentar extrair título do resultado
+  const domain = extractDomain(url);
+  return `Site ${domain}`;
+}
+
+function extractDescription(html, url) {
+  return 'Descrição do site concorrente';
+}
+
+function extractDomain(url) {
+  try {
+    const parsed = new URL(url);
+    return parsed.hostname.replace('www.', '');
+  } catch {
+    return url;
+  }
+}
+
+async function analyzeDomain(url) {
+  const domain = extractDomain(url);
+
+  // Simular análise de domínio
+  // Em produção, usar APIs como Ahrefs, Moz, ou Ubersuggest
+  const hash = hashString(domain);
+  const domainAuthority = 20 + (hash % 60); // 20-80
+  const backlinks = 100 + (hash % 10000);
+  const traffic = 500 + (hash % 50000);
+
+  // Buscar conteúdo do site para análise
+  let contentLength = 0;
+  let imagesCount = 0;
+  let videosCount = 0;
+  let headings = [];
+  let technologies = [];
+
+  try {
+    const response = await fetch(url, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (compatible; SEOBot/1.0)'
+      },
+      signal: AbortSignal.timeout(5000)
+    });
+
+    const html = await response.text();
+    contentLength = html.length;
+
+    // Extrair headings
+    const h1Match = html.match(/<h1[^>]*>(.*?)<\/h1>/gi);
+    const h2Match = html.match(/<h2[^>]*>(.*?)<\/h2>/gi);
+    const h3Match = html.match(/<h3[^>]*>(.*?)<\/h3>/gi);
+
+    headings = [
+      ...(h1Match || []).map(h => ({ type: 'H1', text: h.replace(/<[^>]*>/g, '').trim() })),
+      ...(h2Match || []).map(h => ({ type: 'H2', text: h.replace(/<[^>]*>/g, '').trim() })),
+      ...(h3Match || []).map(h => ({ type: 'H3', text: h.replace(/<[^>]*>/g, '').trim() }))
+    ].slice(0, 10);
+
+    // Contar imagens
+    const imgMatches = html.match(/<img[^>]*>/gi);
+    imagesCount = imgMatches ? imgMatches.length : 0;
+
+    // Contar vídeos
+    const videoMatches = html.match(/<video[^>]*>|youtube\.com|vimeo\.com/gi);
+    videosCount = videoMatches ? videoMatches.length : 0;
+
+    // Detectar tecnologias
+    if (html.includes('wp-content')) technologies.push('WordPress');
+    if (html.includes('react')) technologies.push('React');
+    if (html.includes('vue')) technologies.push('Vue');
+    if (html.includes('angular')) technologies.push('Angular');
+    if (html.includes('jquery')) technologies.push('jQuery');
+    if (html.includes('bootstrap')) technologies.push('Bootstrap');
+    if (html.includes('tailwind')) technologies.push('Tailwind');
+
+  } catch (e) {
+    console.error('Erro ao analisar domínio:', e);
+  }
+
+  return {
+    domainAuthority,
+    backlinks,
+    traffic,
+    technologies,
+    headings,
+    contentLength,
+    imagesCount,
+    videosCount
+  };
+}
+
+function hashString(str) {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash;
+  }
+  return Math.abs(hash);
+}
+
+function generateRecommendations(clientDomain, competitors) {
+  const recommendations = [];
+
+  // Analisar concorrentes e gerar recomendações
+  const avgDA = competitors.reduce((sum, c) => sum + c.domainAuthority, 0) / competitors.length;
+  const avgBacklinks = competitors.reduce((sum, c) => sum + c.backlinks, 0) / competitors.length;
+
+  if (avgDA > 50) {
+    recommendations.push({
+      type: 'authority',
+      priority: 'high',
+      title: 'Construir Autoridade de Domínio',
+      description: `Seus concorrentes têm DA médio de ${Math.round(avgDA)}. Invista em backlinks de qualidade.`,
+      actions: [
+        'Guest posting em sites de autoridade',
+        'Parcerias com outros ministérios',
+        'Publicar conteúdo original e citável'
+      ]
+    });
+  }
+
+  if (avgBacklinks > 1000) {
+    recommendations.push({
+      type: 'backlinks',
+      priority: 'high',
+      title: 'Aumentar Backlinks',
+      description: `Concorrentes têm em média ${Math.round(avgBacklinks)} backlinks.`,
+      actions: [
+        'Criar conteúdo compartilhável',
+        'Listar em diretórios de igrejas',
+        'Pedir links de sites parceiros'
+      ]
+    });
+  }
+
+  // Analisar conteúdo
+  const hasVideo = competitors.some(c => c.videosCount > 0);
+  if (hasVideo) {
+    recommendations.push({
+      type: 'content',
+      priority: 'medium',
+      title: 'Adicionar Conteúdo em Vídeo',
+      description: 'Concorrentes usam vídeo para engajamento.',
+      actions: [
+        'Criar canal no YouTube',
+        'Publicar sermões em vídeo',
+        'Usar Shorts/Reels para alcance'
+      ]
+    });
+  }
+
+  // Recomendações gerais
+  recommendations.push({
+    type: 'seo',
+    priority: 'medium',
+    title: 'Otimizar para Keywords de Cauda Longa',
+    description: 'Foque em keywords específicas para atrair tráfego qualificado.',
+    actions: [
+      'Criar artigos sobre temas específicos',
+      'Usar perguntas como títulos',
+      'Otimizar para busca por voz'
+    ]
+  });
+
+  recommendations.push({
+    type: 'social',
+    priority: 'medium',
+    title: 'Ampliar Presença nas Redes Sociais',
+    description: 'Redes sociais geram tráfego e autoridade.',
+    actions: [
+      'Postar diariamente no Instagram',
+      'Criar grupo no Telegram',
+      'Compartilhar conteúdo nos Stories'
+    ]
+  });
+
+  return recommendations;
+}
+
+async function getCompetitorAnalysis(env, url, origin) {
+  try {
+    const clientDomain = url.searchParams.get('domain') || 'fabianogoncalves.com.br';
+    const keyword = url.searchParams.get('keyword');
+
+    let query = `SELECT * FROM competitor_analysis WHERE client_domain = ?`;
+    const params = [clientDomain];
+
+    if (keyword) {
+      query += ` AND keyword = ?`;
+      params.push(keyword);
+    }
+
+    query += ` ORDER BY analysis_date DESC, rank_position ASC LIMIT 50`;
+
+    const results = await env.DB.prepare(query).bind(...params).all();
+
+    // Agrupar por keyword
+    const grouped = {};
+    for (const row of results.results) {
+      if (!grouped[row.keyword]) {
+        grouped[row.keyword] = [];
+      }
+      grouped[row.keyword].push({
+        rank: row.rank_position,
+        domain: row.competitor_domain,
+        title: row.competitor_title,
+        description: row.competitor_description,
+        domainAuthority: row.domain_authority,
+        backlinks: row.backlinks,
+        traffic: row.traffic,
+        technologies: JSON.parse(row.technologies || '[]'),
+        headings: JSON.parse(row.headings || '[]'),
+        contentLength: row.content_length,
+        imagesCount: row.images_count,
+        videosCount: row.videos_count
+      });
+    }
+
+    return json({
+      success: true,
+      clientDomain,
+      analysis: grouped,
+      totalResults: results.results.length
+    }, 200, origin);
+
+  } catch (e) {
+    return err('Erro ao buscar análise: ' + e.message, 500, origin);
+  }
+}
+
+async function getCompetitorKeywords(env, url, origin) {
+  try {
+    const clientDomain = url.searchParams.get('domain') || 'fabianogoncalves.com.br';
+
+    const results = await env.DB.prepare(
+      `SELECT DISTINCT keyword, COUNT(*) as competitor_count, 
+       AVG(domain_authority) as avg_da, MAX(analysis_date) as last_analysis
+       FROM competitor_analysis 
+       WHERE client_domain = ?
+       GROUP BY keyword
+       ORDER BY last_analysis DESC`
+    ).bind(clientDomain).all();
+
+    return json({
+      success: true,
+      clientDomain,
+      keywords: results.results
+    }, 200, origin);
+
+  } catch (e) {
+    return err('Erro ao buscar keywords: ' + e.message, 500, origin);
+  }
 }

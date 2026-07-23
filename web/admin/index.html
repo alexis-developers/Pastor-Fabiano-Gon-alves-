@@ -110,7 +110,7 @@
       <button class="topbar__icon-btn" title="Notificações">
         <svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
       </button>
-      <button class="topbar__icon-btn" title="Configurações">
+      <button class="topbar__icon-btn" title="Configurações" onclick="showSection('config')">
         <svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.57 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
       </button>
       <button class="topbar__avatar" title="Perfil">
@@ -273,7 +273,7 @@
     <section id="section-artigos" style="display:none">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
         <h2 style="color:var(--blue);font-size:1rem;font-weight:800">Artigos Bíblicos</h2>
-        <button class="btn btn-primary" onclick="openModal('modal-artigo');clearArtigo()">+ Novo Artigo</button>
+        <button class="btn btn-primary" onclick="showSection('editor-artigo');clearArtigo()">+ Novo Artigo</button>
       </div>
       <div style="display:flex;gap:8px;margin-bottom:16px">
         <button class="btn btn-sm btn-outline" onclick="filterArtigos('')">Todos</button>
@@ -412,6 +412,46 @@
       <div style="margin-top:16px;display:flex;gap:8px;justify-content:center" id="leads-paginacao"></div>
     </section>
 
+    <!-- ── CONFIGURAÇÕES ─────────────────────────────────── -->
+    <section id="section-config" style="display:none">
+      <h2 style="color:var(--blue);font-size:1rem;font-weight:800;margin-bottom:16px">Configurações do Admin</h2>
+
+      <div class="panel" style="margin-bottom:16px">
+        <div class="panel-header"><div class="panel-header__left"><h2><span class="panel-accent"></span>Perfil do Administrador</h2></div></div>
+        <div class="panel-body" style="display:grid;gap:16px;max-width:500px">
+          <div class="form-group"><label>Nome</label><input type="text" id="config-nome" value="F. Gonçalves"></div>
+          <div class="form-group"><label>E-mail</label><input type="email" id="config-email" value="admin@fabianogoncalves.com.br"></div>
+          <div class="form-group"><label>Cargo</label><input type="text" id="config-cargo" value="Administrador" disabled style="opacity:.6"></div>
+          <button class="btn btn-primary" onclick="saveConfigPerfil()" style="width:fit-content">Salvar alterações</button>
+        </div>
+      </div>
+
+      <div class="panel" style="margin-bottom:16px">
+        <div class="panel-header"><div class="panel-header__left"><h2><span class="panel-accent"></span>API do Worker</h2></div></div>
+        <div class="panel-body" style="max-width:500px">
+          <div class="form-group">
+            <label>URL da API</label>
+            <input type="text" id="config-api-url" value="https://fabiano-api.dev-teste.workers.dev" onchange="updateApiUrl(this.value)">
+          </div>
+          <div class="form-group">
+            <label>Token de Admin</label>
+            <div style="display:flex;gap:8px;align-items:center">
+              <input type="password" id="config-token" value="7aa16ef4ca74973135931e95229b1ea83835ddabca71cb4d8977b546b488e0f9" style="flex:1">
+              <button class="btn btn-outline btn-sm" onclick="toggleTokenVis()">👁</button>
+            </div>
+          </div>
+          <button class="btn btn-primary" onclick="saveConfigApi()" style="width:fit-content">Salvar credenciais</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header"><div class="panel-header__left"><h2><span class="panel-accent"></span>Sessão</h2></div></div>
+        <div class="panel-body" style="display:flex;gap:12px;flex-wrap:wrap">
+          <button class="btn btn-outline" onclick="logout()">🔒 Sair da conta</button>
+        </div>
+      </div>
+    </section>
+
   </div>
 </main>
 
@@ -493,17 +533,28 @@
 </div>
 
 <!-- Modal Artigo -->
-<div class="modal-overlay" id="modal-artigo">
-  <div class="modal" style="max-width:700px">
-    <div class="modal-header"><h3 id="modal-artigo-title">Artigo Bíblico</h3><button class="modal-close" onclick="closeModal('modal-artigo')">✕</button></div>
-    <div class="modal-body">
+<!-- ── EDITOR DE ARTIGO (página inteira) ─────────────── -->
+<section id="section-editor-artigo" style="display:none">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+    <div style="display:flex;align-items:center;gap:12px">
+      <button class="btn btn-outline" onclick="showSection('artigos')" style="display:flex;align-items:center;gap:6px">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+        Voltar ao painel
+      </button>
+      <h2 style="color:var(--blue);font-size:1rem;font-weight:800" id="editor-artigo-title">Novo Artigo</h2>
+    </div>
+    <button class="btn btn-primary" onclick="saveArtigo()">Salvar</button>
+  </div>
+
+  <div class="panel">
+    <div class="panel-body">
       <input type="hidden" id="artigo-id">
-      <div class="form-group"><label>Título *</label><input type="text" id="artigo-titulo"></div>
-      <div class="form-group"><label>Resumo</label><textarea id="artigo-desc" rows="2"></textarea></div>
+      <div class="form-group"><label>Título *</label><input type="text" id="artigo-titulo" placeholder="Título do artigo"></div>
+      <div class="form-group"><label>Resumo</label><textarea id="artigo-desc" rows="2" placeholder="Breve resumo do artigo"></textarea></div>
       <div class="form-group"><label>Palavras-chave (separadas por vírgula)</label><input type="text" id="artigo-kw" placeholder="fé, oração, Bíblia, salvação"></div>
       <div class="form-row">
-        <div class="form-group"><label>SEO Title</label><input type="text" id="artigo-seo-title"></div>
-        <div class="form-group"><label>SEO Description</label><input type="text" id="artigo-seo-desc"></div>
+        <div class="form-group"><label>SEO Title</label><input type="text" id="artigo-seo-title" placeholder="Título SEO"></div>
+        <div class="form-group"><label>SEO Description</label><input type="text" id="artigo-seo-desc" placeholder="Descrição SEO"></div>
       </div>
       <div class="form-group">
         <label>Conteúdo *</label>
@@ -525,12 +576,8 @@
         </select>
       </div>
     </div>
-    <div class="modal-footer">
-      <button class="btn btn-outline" onclick="closeModal('modal-artigo')">Cancelar</button>
-      <button class="btn btn-primary" onclick="saveArtigo()">Salvar</button>
-    </div>
   </div>
-</div>
+</section>
 
 <!-- Modal Doutor -->
 <div class="modal-overlay" id="modal-doutor">

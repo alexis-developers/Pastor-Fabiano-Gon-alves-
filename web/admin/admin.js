@@ -5,8 +5,8 @@
 
 // ── Config ─────────────────────────────────────────────────
 // Seguro: este arquivo só é servido a usuários autenticados pelo Cloudflare Access
-const API_URL     = 'https://fabiano-api.dev-teste.workers.dev';
-const ADMIN_TOKEN = '7aa16ef4ca74973135931e95229b1ea83835ddabca71cb4d8977b546b488e0f9';
+let API_URL     = localStorage.getItem('admin_api_url') || 'https://fabiano-api.dev-teste.workers.dev';
+let ADMIN_TOKEN = localStorage.getItem('admin_token') || '7aa16ef4ca74973135931e95229b1ea83835ddabca71cb4d8977b546b488e0f9';
 
 // ── Init ────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
@@ -57,12 +57,12 @@ async function api(method, path, body) {
 }
 
 // ── Navegação ────────────────────────────────────────────────
-const SECTIONS = ['dashboard','mensagens','pensamentos','noticias','artigos','doutores','agenda','agendamentos','pdfs','cron-logs','leads'];
+const SECTIONS = ['dashboard','mensagens','pensamentos','noticias','artigos','editor-artigo','doutores','agenda','agendamentos','pdfs','cron-logs','leads','config'];
 const TITLES   = {
   dashboard:'Dashboard', mensagens:'Mensagens (YouTube)', pensamentos:'Pensamento do Dia',
-  noticias:'Notícias', artigos:'Artigos Bíblicos', doutores:'Doutores',
+  noticias:'Notícias', artigos:'Artigos Bíblicos', 'editor-artigo':'Novo Artigo', doutores:'Doutores',
   agenda:'Configurar Agenda', agendamentos:'Agendamentos', pdfs:'PDFs de Referência',
-  'cron-logs':'Logs dos CRONs', leads:'Contatos Captados'
+  'cron-logs':'Logs dos CRONs', leads:'Contatos Captados', config:'Configurações'
 };
 
 function showSection(id) {
@@ -351,7 +351,7 @@ function clearArtigo() {
   });
   document.getElementById('artigo-conteudo').innerHTML = '';
   document.getElementById('artigo-status').value = 'rascunho';
-  document.getElementById('modal-artigo-title').textContent = 'Artigo Bíblico';
+  document.getElementById('editor-artigo-title').textContent = 'Novo Artigo';
 }
 
 function editArtigo(id) {
@@ -365,8 +365,8 @@ function editArtigo(id) {
   document.getElementById('artigo-seo-desc').value   = a.seo_description||'';
   document.getElementById('artigo-conteudo').innerHTML = a.conteudo||'';
   document.getElementById('artigo-status').value     = a.status||'rascunho';
-  document.getElementById('modal-artigo-title').textContent = 'Editar Artigo';
-  openModal('modal-artigo');
+  document.getElementById('editor-artigo-title').textContent = 'Editar Artigo';
+  showSection('editor-artigo');
 }
 
 async function saveArtigo() {
@@ -385,7 +385,7 @@ async function saveArtigo() {
   try {
     if (id) await api('PUT',`/api/admin/artigos/${id}`, body);
     else    await api('POST','/api/admin/artigos', body);
-    closeModal('modal-artigo');
+    showSection('artigos');
     toast('Artigo salvo','success');
     loadArtigos(_artigoFiltro);
   } catch(e) { toast('Erro ao salvar','error'); }
@@ -789,3 +789,46 @@ function toast(msg, type='') {
   requestAnimationFrame(()=>{ el.classList.add('show'); });
   setTimeout(()=>{ el.classList.remove('show'); }, 3000);
 }
+
+// ── CONFIGURAÇÕES ──────────────────────────────────────────
+function toggleTokenVis() {
+  const el = document.getElementById('config-token');
+  el.type = el.type === 'password' ? 'text' : 'password';
+}
+
+function updateApiUrl(url) {
+  if (url) localStorage.setItem('admin_api_url', url);
+}
+
+function saveConfigPerfil() {
+  const nome = document.getElementById('config-nome').value.trim();
+  const email = document.getElementById('config-email').value.trim();
+  if (!nome || !email) { toast('Preencha nome e e-mail.', 'error'); return; }
+  localStorage.setItem('admin_nome', nome);
+  localStorage.setItem('admin_email', email);
+  document.querySelector('.user-name').textContent = nome;
+  toast('Perfil atualizado com sucesso!');
+}
+
+function saveConfigApi() {
+  const url = document.getElementById('config-api-url').value.trim();
+  const token = document.getElementById('config-token').value.trim();
+  if (!url || !token) { toast('Preencha URL e token.', 'error'); return; }
+  API_URL = url;
+  ADMIN_TOKEN = token;
+  localStorage.setItem('admin_api_url', url);
+  localStorage.setItem('admin_token', token);
+  toast('Credenciais salvas com sucesso!');
+}
+
+// Restaurar credenciais salvas ao iniciar
+document.addEventListener('DOMContentLoaded', () => {
+  const savedUrl = localStorage.getItem('admin_api_url');
+  const savedToken = localStorage.getItem('admin_token');
+  const savedNome = localStorage.getItem('admin_nome');
+  const savedEmail = localStorage.getItem('admin_email');
+  if (savedUrl) document.getElementById('config-api-url').value = savedUrl;
+  if (savedToken) document.getElementById('config-token').value = savedToken;
+  if (savedNome) document.getElementById('config-nome').value = savedNome;
+  if (savedEmail) document.getElementById('config-email').value = savedEmail;
+});

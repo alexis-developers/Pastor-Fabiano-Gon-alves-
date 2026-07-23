@@ -5,18 +5,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pastor Fabiano Gonçalves — Foco, Fé e Vitória</title>
   <meta name="description" content="Pastor Fabiano Gonçalves. Mensagens, estudos bíblicos, devocionais e o Ouvido Amigo com atendimento pastoral e psicológico.">
-  <meta name="keywords" content="Pastor Fabiano Gonçalves, pregações, estudos bíblicos, Ouvido Amigo">
-  <meta property="og:title" content="Pastor Fabiano Gonçalves">
-  <meta property="og:description" content="Foco, Fé e Vitória — Mensagens e estudos bíblicos">
+  <meta name="keywords" content="Pastor Fabiano Gonçalves, pregações, estudos bíblicos, Ouvido Amigo, devocional, fé, esperança">
+  <meta property="og:title" content="Pastor Fabiano Gonçalves — Foco, Fé e Vitória">
+  <meta property="og:description" content="Mensagens, estudos bíblicos, devocionais e acolhimento pastoral. Fundamentado na Palavra de Deus.">
   <meta property="og:image" content="https://fabianogoncalves.com.br/assets/FABIANO.png">
   <meta property="og:url" content="https://fabianogoncalves.com.br/">
   <meta property="og:type" content="website">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:site_name" content="Pastor Fabiano Gonçalves">
+  <meta property="og:site_name" content="Pastor Fabiano Gonçalves">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Pastor Fabiano Gonçalves">
+  <meta name="twitter:description" content="Foco, Fé e Vitória — Mensagens e estudos bíblicos">
+  <meta name="twitter:image" content="https://fabianogoncalves.com.br/assets/FABIANO.png">
   <link rel="canonical" href="https://fabianogoncalves.com.br/">
   <link rel="icon" href="/assets/favicon.ico" type="image/x-icon">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style.css">
+  <!-- Preload recursos críticos -->
+  <link rel="preload" href="/assets/FABIANO.webp" as="image" type="image/webp" fetchpriority="high">
+  <link rel="preload" href="https://fonts.gstatic.com/s/montserrat/v26/JTUHjIg1_i6t8kCHKm4532VJOt5-QNFgpCuM73w5aXp-p7K4KLg.woff2" as="font" type="font/woff2" crossorigin>
   <!-- Schema.org -->
   <script type="application/ld+json">
   {
@@ -25,7 +35,14 @@
     "name": "Pastor Fabiano Gonçalves",
     "jobTitle": "Pastor",
     "url": "https://fabianogoncalves.com.br",
-    "sameAs": []
+    "image": "https://fabianogoncalves.com.br/assets/FABIANO.png",
+    "description": "Pastor evangélico dedicado ao ensino da Palavra de Deus com foco, fé e vitória.",
+    "sameAs": [],
+    "address": {
+      "@type": "PostalAddress",
+      "addressCountry": "BR"
+    },
+    "knowsAbout": ["Bíblia", "Teologia", "Pregação", "Aconselhamento Pastoral"]
   }
   </script>
 </head>
@@ -59,17 +76,23 @@
   <div class="hero__blue-shape"></div>
   <div class="container hero__grid">
     <div class="hero__image">
-      <img
-        src="/assets/FABIANO.png"
-        alt="Pastor Fabiano Gonçalves"
-        class="hero__photo"
-        loading="eager"
-      >
+      <picture>
+        <source srcset="/assets/FABIANO.webp" type="image/webp">
+        <img
+          src="/assets/FABIANO.png"
+          alt="Pastor Fabiano Gonçalves"
+          class="hero__photo"
+          width="486"
+          height="503"
+          loading="eager"
+          fetchpriority="high"
+        >
+      </picture>
     </div>
     <div class="hero__content">
       <h1>
-        <span class="hero__title-blue">FOCO E FORÇA</span>
-        <span class="hero__title-gold">FÉ E VITÓRIA</span>
+        <span class="hero__title-blue">FOCO É FORÇA</span>
+        <span class="hero__title-gold">FÉ É VITÓRIA</span>
       </h1>
       <blockquote class="hero__verse">
         <p>"Quanto a mim, esta é a minha aliança com eles", diz o Senhor. "O meu Espírito que está em você e as minhas palavras que pus em sua boca não se afastarão dela, nem da boca dos seus filhos e dos descendentes deles, desde agora e para sempre", diz o Senhor.</p>
@@ -135,53 +158,6 @@
     </div>
     <div class="text-center mt-24">
       <a href="/noticias/" class="btn btn-outline">Ver Todas as Notícias</a>
-    </div>
-  </div>
-</section>
-
-<!-- ── Ouvido Amigo — em standby, aguardando aprovação ── -->
-<section class="section section--blue" style="display:none">
-  <div class="container">
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:48px;align-items:center">
-      <div>
-        <span class="hero__tag" style="background:rgba(200,169,110,0.2);color:var(--gold)">Ouvido Amigo</span>
-        <h2 style="color:var(--white);margin-top:12px">Cuidado integral —<br><span style="color:var(--gold)">fé e saúde</span> juntos</h2>
-        <p style="margin:16px 0;color:rgba(255,255,255,0.75);line-height:1.8">
-          O Ouvido Amigo oferece acolhimento pastoral
-          e atendimento psicológico profissional, integrando fé e ciência para o cuidado completo
-          do ser humano.
-        </p>
-        <p style="font-size:0.78rem;color:rgba(255,255,255,0.45);font-style:italic;margin-bottom:24px">
-          A inteligência artificial atua exclusivamente como ferramenta de apoio e acolhimento inicial,
-          não realizando diagnósticos ou substituindo profissionais habilitados.
-        </p>
-        <div style="display:flex;gap:12px;flex-wrap:wrap">
-          <a href="/instituto/agendamento.html" class="btn btn-gold">Falar com Ouvido Amigo</a>
-          <a href="/instituto/chat.html" class="btn btn-outline" style="border-color:rgba(255,255,255,0.4);color:var(--white)">Falar com Agente Pastoral</a>
-        </div>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
-        <div style="background:rgba(255,255,255,0.08);border-radius:12px;padding:24px;border:1px solid rgba(255,255,255,0.12)">
-          <div style="margin-bottom:10px"><svg viewBox="0 0 24 24" fill="var(--gold)" width="28" height="28"><path d="M13 3C9.23 3 6.19 5.95 6 9.66l-1.92 2.53c-.24.31 0 .81.42.81H6v3c0 1.11.89 2 2 2h1v3h7v-4.68c2.36-1.12 4-3.53 4-6.32 0-3.87-3.13-7-7-7z"/></svg></div>
-          <h3 style="color:var(--gold);font-size:0.95rem;margin-bottom:6px">Psicologia</h3>
-          <p style="font-size:0.82rem;color:rgba(255,255,255,0.6)">Atendimento psicológico profissional com abordagem humanizada</p>
-        </div>
-        <div style="background:rgba(255,255,255,0.08);border-radius:12px;padding:24px;border:1px solid rgba(255,255,255,0.12)">
-          <div style="margin-bottom:10px"><svg viewBox="0 0 24 24" fill="var(--gold)" width="28" height="28"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg></div>
-          <h3 style="color:var(--gold);font-size:0.95rem;margin-bottom:6px">Psicanálise</h3>
-          <p style="font-size:0.82rem;color:rgba(255,255,255,0.6)">Escuta analítica e compreensão profunda do inconsciente</p>
-        </div>
-        <div style="background:rgba(255,255,255,0.08);border-radius:12px;padding:24px;border:1px solid rgba(255,255,255,0.12)">
-          <div style="margin-bottom:10px"><svg viewBox="0 0 24 24" fill="var(--gold)" width="28" height="28"><path d="M21 5c-1.11-.35-2.33-.5-3.5-.5-1.95 0-4.05.4-5.5 1.5-1.45-1.1-3.55-1.5-5.5-1.5S2.45 4.9 1 6v14.65c0 .25.25.5.5.5.1 0 .15-.05.25-.05C3.1 20.45 5.05 20 6.5 20c1.95 0 4.05.4 5.5 1.5 1.35-.85 3.8-1.5 5.5-1.5 1.65 0 3.35.3 4.75 1.05.1.05.15.05.25.05.25 0 .5-.25.5-.5V6c-.6-.45-1.25-.75-2-1zm0 13.5c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V8c1.35-.85 3.8-1.5 5.5-1.5 1.2 0 2.4.15 3.5.5v11.5z"/></svg></div>
-          <h3 style="color:var(--gold);font-size:0.95rem;margin-bottom:6px">Aconselhamento Pastoral</h3>
-          <p style="font-size:0.82rem;color:rgba(255,255,255,0.6)">Orientação baseada na Palavra de Deus e amor cristão</p>
-        </div>
-        <div style="background:rgba(255,255,255,0.08);border-radius:12px;padding:24px;border:1px solid rgba(255,255,255,0.12)">
-          <div style="margin-bottom:10px"><svg viewBox="0 0 24 24" fill="var(--gold)" width="28" height="28"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg></div>
-          <h3 style="color:var(--gold);font-size:0.95rem;margin-bottom:6px">Chat de Acolhimento</h3>
-          <p style="font-size:0.82rem;color:rgba(255,255,255,0.6)">Agente pastoral disponível para orientação inicial</p>
-        </div>
-      </div>
     </div>
   </div>
 </section>
@@ -276,7 +252,10 @@
     <div class="footer__center">
       <p style="font-size:0.75rem;color:rgba(255,255,255,0.5);letter-spacing:0.08em;text-transform:uppercase">Contato via QR Code</p>
       <div class="footer__qr">
-        <img src="/assets/qr-contato.png" alt="QR Code de contato — Pastor Fabiano Gonçalves">
+        <picture>
+          <source srcset="/assets/qr-contato.webp" type="image/webp">
+          <img src="/assets/qr-contato.png" alt="QR Code de contato — Pastor Fabiano Gonçalves" width="228" height="341" loading="lazy">
+        </picture>
       </div>
       <p style="font-size:0.72rem;color:rgba(255,255,255,0.4)">Aponte a câmera para falar conosco</p>
     </div>
@@ -451,5 +430,13 @@
   loadPensamento();
   loadNoticias();
 </script>
+
+<a href="https://whatsapp.com/channel/0029VajJ6W4DTkKAq6BGJT0F" target="_blank" rel="noopener" class="floating-channel">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  <div class="floating-channel__text">
+    Siga no WhatsApp
+    <small>Canal Fabiano Gonçalves</small>
+  </div>
+</a>
 </body>
 </html>

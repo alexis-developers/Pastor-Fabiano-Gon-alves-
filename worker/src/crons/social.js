@@ -26,7 +26,12 @@ REGRAS:
 - SEMPRE terminar com hashtags
 - NUNCA usar linguagem religiosa excessivamente formal
 - NUNCA usar a palavra "ministério" nos textos
-- NUNCA mencionar política, eleições, candidatos, partidos, votos ou cargos públicos`;
+- NUNCA mencionar política, eleições, candidatos, partidos, votos ou cargos públicos
+
+LINGUAGEM EMPÁTICA E ACOLHEDORA (SEGUIR SEMPRE):
+- Dirija-se diretamente ao leitor usando "você" — nunca "o leitor" ou "a pessoa"
+- Use a 1ª pessoa do plural ("nós", "nossa", "conosco") ao falar de sentimentos, desafios, medos, dúvidas ou aprendizados
+- Tom de amigo próximo que caminha junto, não de autor distante`;
 
 export async function cronSocial(env) {
   const diasSemana = ['domingo','segunda','terça','quarta','quinta','sexta','sábado'];

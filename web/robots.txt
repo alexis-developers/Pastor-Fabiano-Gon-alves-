@@ -4,3 +4,12 @@ Disallow: /admin/
 Disallow: /admin
 
 Sitemap: https://fabianogoncalves.com.br/sitemap.xml
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /
+
+User-agent: Bingbot
+Allow: /
