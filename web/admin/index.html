@@ -452,6 +452,52 @@
       </div>
     </section>
 
+    <!-- ── EDITOR DE ARTIGO (página inteira) ─────────────── -->
+    <section id="section-editor-artigo" style="display:none">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <div style="display:flex;align-items:center;gap:12px">
+          <button class="btn btn-outline" onclick="showSection('artigos')" style="display:flex;align-items:center;gap:6px">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+            Voltar ao painel
+          </button>
+          <h2 style="color:var(--blue);font-size:1rem;font-weight:800" id="editor-artigo-title">Novo Artigo</h2>
+        </div>
+        <button class="btn btn-primary" onclick="saveArtigo()">Salvar</button>
+      </div>
+
+      <div class="panel">
+        <div class="panel-body">
+          <input type="hidden" id="artigo-id">
+          <div class="form-group"><label>Título *</label><input type="text" id="artigo-titulo" placeholder="Título do artigo"></div>
+          <div class="form-group"><label>Resumo</label><textarea id="artigo-desc" rows="2" placeholder="Breve resumo do artigo"></textarea></div>
+          <div class="form-group"><label>Palavras-chave (separadas por vírgula)</label><input type="text" id="artigo-kw" placeholder="fé, oração, Bíblia, salvação"></div>
+          <div class="form-row">
+            <div class="form-group"><label>SEO Title</label><input type="text" id="artigo-seo-title" placeholder="Título SEO"></div>
+            <div class="form-group"><label>SEO Description</label><input type="text" id="artigo-seo-desc" placeholder="Descrição SEO"></div>
+          </div>
+          <div class="form-group">
+            <label>Conteúdo *</label>
+            <div class="editor-toolbar">
+              <button onclick="document.execCommand('bold')"><b>B</b></button>
+              <button onclick="document.execCommand('italic')"><i>I</i></button>
+              <button onclick="document.execCommand('formatBlock',false,'h2')">H2</button>
+              <button onclick="document.execCommand('formatBlock',false,'h3')">H3</button>
+              <button onclick="document.execCommand('formatBlock',false,'blockquote')">❝</button>
+              <button onclick="document.execCommand('formatBlock',false,'p')">P</button>
+            </div>
+            <div class="editor" id="artigo-conteudo" contenteditable="true"></div>
+          </div>
+          <div class="form-group">
+            <label>Status</label>
+            <select id="artigo-status">
+              <option value="rascunho">Rascunho</option>
+              <option value="publicado">Publicado</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </section>
+
   </div>
 </main>
 
@@ -532,52 +578,8 @@
   </div>
 </div>
 
-<!-- Modal Artigo -->
-<!-- ── EDITOR DE ARTIGO (página inteira) ─────────────── -->
-<section id="section-editor-artigo" style="display:none">
-  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
-    <div style="display:flex;align-items:center;gap:12px">
-      <button class="btn btn-outline" onclick="showSection('artigos')" style="display:flex;align-items:center;gap:6px">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
-        Voltar ao painel
-      </button>
-      <h2 style="color:var(--blue);font-size:1rem;font-weight:800" id="editor-artigo-title">Novo Artigo</h2>
-    </div>
-    <button class="btn btn-primary" onclick="saveArtigo()">Salvar</button>
   </div>
-
-  <div class="panel">
-    <div class="panel-body">
-      <input type="hidden" id="artigo-id">
-      <div class="form-group"><label>Título *</label><input type="text" id="artigo-titulo" placeholder="Título do artigo"></div>
-      <div class="form-group"><label>Resumo</label><textarea id="artigo-desc" rows="2" placeholder="Breve resumo do artigo"></textarea></div>
-      <div class="form-group"><label>Palavras-chave (separadas por vírgula)</label><input type="text" id="artigo-kw" placeholder="fé, oração, Bíblia, salvação"></div>
-      <div class="form-row">
-        <div class="form-group"><label>SEO Title</label><input type="text" id="artigo-seo-title" placeholder="Título SEO"></div>
-        <div class="form-group"><label>SEO Description</label><input type="text" id="artigo-seo-desc" placeholder="Descrição SEO"></div>
-      </div>
-      <div class="form-group">
-        <label>Conteúdo *</label>
-        <div class="editor-toolbar">
-          <button onclick="document.execCommand('bold')"><b>B</b></button>
-          <button onclick="document.execCommand('italic')"><i>I</i></button>
-          <button onclick="document.execCommand('formatBlock',false,'h2')">H2</button>
-          <button onclick="document.execCommand('formatBlock',false,'h3')">H3</button>
-          <button onclick="document.execCommand('formatBlock',false,'blockquote')">❝</button>
-          <button onclick="document.execCommand('formatBlock',false,'p')">P</button>
-        </div>
-        <div class="editor" id="artigo-conteudo" contenteditable="true"></div>
-      </div>
-      <div class="form-group">
-        <label>Status</label>
-        <select id="artigo-status">
-          <option value="rascunho">Rascunho</option>
-          <option value="publicado">Publicado</option>
-        </select>
-      </div>
-    </div>
-  </div>
-</section>
+</main>
 
 <!-- Modal Doutor -->
 <div class="modal-overlay" id="modal-doutor">
