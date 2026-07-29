@@ -27,7 +27,7 @@ npx wrangler secret put ADMIN_TOKEN
 
 # Telegram (bot de aprovação de artigos)
 npx wrangler secret put TELEGRAM_BOT_TOKEN
-# → 8954357731:AAFvYa85qmw5e_iKvtTEmyBqN6nWQIx4YgQ
+# → Cole o token gerado no @BotFather (NÃO HARDCODE)
 
 npx wrangler secret put TELEGRAM_GROUP_ID
 # → -100XXXXXXXXXX (ID negativo do grupo no Telegram)
@@ -54,10 +54,11 @@ Após o Worker estar no ar, configure o webhook **com secret_token** (anti-forja
 
 1. Gere o secret: `openssl rand -hex 32`
 2. Configure via wrangler: `npx wrangler secret put TELEGRAM_WEBHOOK_SECRET`
-3. Abra no browser (substitua {SECRET} pelo valor gerado):
+3. Abra no browser (substitua {TOKEN} e {SECRET}):
 ```
-https://api.telegram.org/bot8954357731:AAFvYa85qmw5e_iKvtTEmyBqN6nWQIx4YgQ/setWebhook?url=https://fabiano-api.dev-teste.workers.dev/api/telegram/webhook&secret_token={SECRET}
+https://api.telegram.org/bot{TOKEN}/setWebhook?url=https://fabiano-api.workers.dev/api/telegram/webhook&secret_token={SECRET}
 ```
+⚠️ URL correta é `fabiano-api.workers.dev` (produção), não `dev-teste`.
 
 O Telegram enviará o header `X-Telegram-Bot-Api-Secret-Token` em cada webhook.
 O Worker valida esse header com timing-safe comparison antes de processar.
@@ -88,7 +89,7 @@ No Cloudflare Zero Trust:
 1. Crie um grupo no Telegram
 2. Adicione `@IAprFabianogoncalves_bot` ao grupo
 3. Envie qualquer mensagem no grupo
-4. Abra: `https://api.telegram.org/bot8954357731:AAFvYa85qmw5e_iKvtTEmyBqN6nWQIx4YgQ/getUpdates`
+4. Abra: `https://api.telegram.org/bot{TOKEN}/getUpdates`
 5. Procure `"chat":{"id":-XXXXXXXXXX}` (número negativo = grupo)
 6. Configure: `npx wrangler secret put TELEGRAM_GROUP_ID`
 
