@@ -571,7 +571,16 @@ async function telegramWebhook(request, env, origin) {
   const chatId = msg.chat.id;
   const groupId = env.TELEGRAM_GROUP_ID;
 
-  if (groupId && String(chatId) !== String(groupId)) return json({ ok: true }, 200, origin);
+  // Comando de descoberta de ID (funciona em qualquer chat/grupo)
+  if (/^\/(id|chatid|meuid|start)$/i.test(text)) {
+    await tgReply(env, chatId, `📌 <b>ID DESTE CHAT/GRUPO:</b>\n<code>${chatId}</code>\n\nID autorizado atualmente no sistema: <code>${groupId || 'Nenhum'}</code>.`);
+    return json({ ok: true }, 200, origin);
+  }
+
+  if (groupId && String(chatId) !== String(groupId)) {
+    await tgReply(env, chatId, `⚠️ <b>GRUPO NÃO AUTORIZADO</b>\n\nID deste grupo: <code>${chatId}</code>\nID cadastrado no Worker: <code>${groupId}</code>\n\nCaso este seja o novo grupo oficial, atualize o secret <code>TELEGRAM_GROUP_ID</code>.`);
+    return json({ ok: true }, 200, origin);
+  }
 
   // ── Comandos sem argumentos ──────────────────────────────
   if (/^\/(help|ajuda|comandos)$/i.test(text)) {
