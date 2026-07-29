@@ -561,25 +561,34 @@ async function chatHandler(request, env, origin) {
 // WEBHOOK TELEGRAM — Aprovação de artigos + comandos
 // ============================================================
 async function telegramWebhook(request, env, origin) {
-  const secret = request.headers.get('X-Telegram-Bot-Api-Secret-Token') || '';
-  if (env.TELEGRAM_WEBHOOK_SECRET && !timingSafeEqual(secret, env.TELEGRAM_WEBHOOK_SECRET)) {
-    return json({ ok: true }, 200, origin);
-  }
+  let chatId = null;
+  try {
+    const secret = request.headers.get('X-Telegram-Bot-Api-Secret-Token') || '';
+    if (env.TELEGRAM_WEBHOOK_SECRET && !timingSafeEqual(secret, env.TELEGRAM_WEBHOOK_SECRET)) {
+      return json({ ok: true }, 200, origin);
+    }
 
-  const body = await request.json();
-  const msg = body.message || body.channel_post;
-  if (!msg) return json({ ok: true }, 200, origin);
+    const body = await request.json().catch(() => ({}));
+    const msg = body.message || body.channel_post || body.edited_message;
+    if (!msg) return json({ ok: true }, 200, origin);
 
-  let text = (msg.text || '').trim();
-  text = text.replace(/^(\/\w+)@\w+/i, '$1'); // Normaliza comandos em grupo com @botname (ex: /gerar_noticia@Bot -> /gerar_noticia)
+    let text = (msg.text || msg.caption || '').trim();
+    text = text.replace(/^(\/\w+)(?:@[\w-]+)?/i, '$1'); // Normaliza qualquer sufixo @botname (ex: /gerar_noticia@Bot -> /gerar_noticia)
 
-  const chatId = String(msg.chat.id);
+    chatId = String(msg.chat.id);
+    if (!text) return json({ ok: true }, 200, origin);
 
-  // Comando de descoberta de ID (funciona em qualquer chat/grupo)
-  if (/^\/(id|chatid|meuid|start)$/i.test(text)) {
-    await tgReply(env, chatId, `📌 <b>ID DESTE CHAT/GRUPO:</b>\n<code>${chatId}</code>`);
-    return json({ ok: true }, 200, origin);
-  }
+    // ── /ping ou /pong ──────────────────────────────────────
+    if (/^\/(ping|pong)$/i.test(text)) {
+      await tgReply(env, chatId, '🏓 <b>PONG!</b> Bot online, ativo e operacional na Cloudflare!');
+      return json({ ok: true }, 200, origin);
+    }
+
+    // Comando de descoberta de ID (funciona em qualquer chat/grupo)
+    if (/^\/(id|chatid|meuid|start)$/i.test(text)) {
+      await tgReply(env, chatId, `📌 <b>ID DESTE CHAT/GRUPO:</b>\n<code>${chatId}</code>\n\nStatus: Bot online e pronto para uso! Envie /ajuda para ver todos os comandos.`);
+      return json({ ok: true }, 200, origin);
+    }
 
   // ── Comandos sem argumentos ──────────────────────────────
   if (/^\/(help|ajuda|comandos)$/i.test(text)) {
@@ -927,6 +936,14 @@ async function telegramWebhook(request, env, origin) {
   }
 
   return json({ ok: true }, 200, origin);
+} catch (e) {
+  console.error('Erro no telegramWebhook:', e);
+  await logCron(env, 'telegram-webhook', 'erro', e.message);
+  if (chatId) {
+    await tgReply(env, chatId, `❌ Erro ao processar comando: ${e.message}`);
+  }
+  return json({ ok: true }, 200, origin);
+}
 }
 
 async function tgReply(env, chatId, text) {
