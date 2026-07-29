@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS artigos (
   published_at INTEGER
 );
 
--- Notícias (manuais — equipe posta com foto, título, subtítulo, conteúdo)
+-- Notícias (RSS automático + manuais — curadoria via Telegram / Admin)
 CREATE TABLE IF NOT EXISTS noticias (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   titulo TEXT NOT NULL,
@@ -30,7 +30,9 @@ CREATE TABLE IF NOT EXISTS noticias (
   seo_title TEXT,
   seo_description TEXT,
   slug TEXT UNIQUE NOT NULL,
-  status TEXT DEFAULT 'rascunho', -- rascunho | publicado
+  status TEXT DEFAULT 'rascunho', -- rascunho | pendente | aprovado | publicado | rejeitado | quarentena
+  fonte_url TEXT,
+  fonte_nome TEXT,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   published_at INTEGER
 );

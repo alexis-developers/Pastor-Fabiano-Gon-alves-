@@ -9,7 +9,8 @@ import { cronSeo       } from './crons/seo.js';
 import { cronSocial    } from './crons/social.js';
 import { cronSuportte  } from './crons/suporte.js';
 import { cronAnalytics } from './crons/analytics.js';
-import { logCron, sendTelegram } from './crons/ai-helper.js';
+import { cronNoticias  } from './crons/noticias.js';
+import { logCron, sendTelegram, getTodayBRT } from './crons/ai-helper.js';
 
 const ALLOWED_ORIGINS = [
   'https://fabianogoncalves.com.br',
@@ -265,9 +266,10 @@ export default {
 
       // Trigger CRON manualmente
       if (method === 'POST' && path === '/api/admin/cron/test') {
-        const { cron = 'pastoral' } = await request.json().catch(() => ({}));
+        const { cron = 'pastoral', url: feedUrl = null } = await request.json().catch(() => ({}));
         if (cron === 'pastoral') await cronPastoral(env);
         else if (cron === 'seo') await cronSeo(env);
+        else if (cron === 'noticias') { const r = await cronNoticias(env, feedUrl); return json({ ok: true, cron, ...r }, 200, origin); }
         else if (cron === 'social') await cronSocial(env);
         else if (cron === 'security') { const r = await securityScan(env); return json({ ok: true, cron, ...r }, 200, origin); }
         return json({ ok: true, cron }, 200, origin);
@@ -289,6 +291,7 @@ export default {
     const map = {
       '0 9 * * *': cronPastoral,
       '0 15 * * 1,4': cronSeo,
+      '0 11,18 * * *': cronNoticias,
       '0 14 * * *': cronSocial,
       '0 15 * * 1': cronSuportte,
       '0 16 * * 1': cronAnalytics,
@@ -356,7 +359,7 @@ async function getMensagemDestaque(env, origin) {
 }
 
 async function getPensamento(env, origin) {
-  const today = new Date().toISOString().slice(0, 10);
+  const today = getTodayBRT();
   let row = await env.DB.prepare(`SELECT * FROM pensamentos WHERE data_exibicao = ? LIMIT 1`).bind(today).first();
   if (!row) {
     row = await env.DB.prepare(`SELECT * FROM pensamentos ORDER BY RANDOM() LIMIT 1`).first();
@@ -611,7 +614,7 @@ async function telegramWebhook(request, env, origin) {
   }
 
   if (/^\/diario$/i.test(text)) {
-    const today = new Date().toISOString().slice(0, 10);
+    const today = getTodayBRT();
     let row = await env.DB.prepare(`SELECT texto, referencia FROM pensamentos WHERE data_exibicao = ? LIMIT 1`).bind(today).first();
     if (!row) row = await env.DB.prepare(`SELECT texto, referencia FROM pensamentos ORDER BY RANDOM() LIMIT 1`).first();
     if (row) {
@@ -640,6 +643,36 @@ async function telegramWebhook(request, env, origin) {
       await tgReply(env, chatId, '✅ Artigo gerado! Aguardando aprovação.');
     } catch (e) {
       await tgReply(env, chatId, `❌ Erro: ${e.message}`);
+    }
+    return json({ ok: true }, 200, origin);
+  }
+
+  if (/^\/gerar_noticia(?:\s+(.+))?$/i.test(text)) {
+    const matchUrl = text.match(/^\/gerar_noticia\s+(.+)$/i);
+    const customUrl = matchUrl ? matchUrl[1].trim() : null;
+    await tgReply(env, chatId, '⏳ Colhendo feed RSS e gerando notícia com IA...');
+    try {
+      const res = await cronNoticias(env, customUrl);
+      if (res.erros && res.erros.length) {
+        await tgReply(env, chatId, `⚠️ Concluído. Notícias processadas: ${res.processadas}.\nAlertas/Erros: ${res.erros.join('\n')}`);
+      } else {
+        await tgReply(env, chatId, `✅ Notícia(s) gerada(s) com sucesso (${res.processadas})! Aguardando aprovação.`);
+      }
+    } catch (e) {
+      await tgReply(env, chatId, `❌ Erro ao gerenciar notícias: ${e.message}`);
+    }
+    return json({ ok: true }, 200, origin);
+  }
+
+  if (/^\/noticias_pendentes$/i.test(text)) {
+    const rows = await env.DB.prepare(
+      `SELECT id, titulo, fonte_nome FROM noticias WHERE status = 'pendente' ORDER BY created_at DESC LIMIT 10`
+    ).all();
+    if (!rows.results.length) {
+      await tgReply(env, chatId, '✅ Nenhuma notícia pendente.');
+    } else {
+      const lista = rows.results.map(n => `ID ${n.id} — ${n.titulo} (${n.fonte_nome || 'RSS'})`).join('\n');
+      await tgReply(env, chatId, `📋 NOTÍCIAS PENDENTES:\n\n${lista}\n\nComandos:\n/aprovar_noticia ID\n/rejeitar_noticia ID`);
     }
     return json({ ok: true }, 200, origin);
   }
@@ -828,6 +861,30 @@ async function telegramWebhook(request, env, origin) {
       `UPDATE artigos SET conteudo = ?, status = 'publicado', published_at = ? WHERE id = ?`
     ).bind(novoConteudo, now, artigoId).run();
     await tgReply(env, chatId, `✅ Artigo #${artigoId} editado e PUBLICADO!\n\n${artigo.titulo}`);
+    return json({ ok: true }, 200, origin);
+  }
+
+  // /aprovar_noticia e /rejeitar_noticia (ou /apn e /rjn)
+  const matchNoticia = text.match(/^\/(aprovar_noticia|rejeitar_noticia|apn|rjn)\s+(\d+)/i);
+  if (matchNoticia) {
+    const acao = matchNoticia[1].toLowerCase();
+    const noticiaId = parseInt(matchNoticia[2]);
+    const now = Math.floor(Date.now() / 1000);
+
+    if (acao === 'aprovar_noticia' || acao === 'apn') {
+      const noticia = await env.DB.prepare(`SELECT id, titulo FROM noticias WHERE id = ?`).bind(noticiaId).first();
+      if (!noticia) {
+        await tgReply(env, chatId, `⚠️ Notícia #${noticiaId} não encontrada.`);
+        return json({ ok: true }, 200, origin);
+      }
+      await env.DB.prepare(
+        `UPDATE noticias SET status = 'publicado', published_at = ? WHERE id = ?`
+      ).bind(now, noticiaId).run();
+      await tgReply(env, chatId, `✅ Notícia #${noticiaId} PUBLICADA no site!\n\n${noticia.titulo}`);
+    } else {
+      await env.DB.prepare(`UPDATE noticias SET status = 'rejeitado' WHERE id = ?`).bind(noticiaId).run();
+      await tgReply(env, chatId, `❌ Notícia #${noticiaId} rejeitada.`);
+    }
     return json({ ok: true }, 200, origin);
   }
 

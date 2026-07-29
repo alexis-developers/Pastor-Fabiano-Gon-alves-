@@ -67,3 +67,9 @@ export function chunkText(text, maxLen = 3900) {
   if (remaining) chunks.push(remaining);
   return chunks;
 }
+
+export function getTodayBRT() {
+  // Retorna a data no formato YYYY-MM-DD ajustada para o fuso UTC-3 (Horário de Brasília)
+  const nowBRT = new Date(Date.now() - 3 * 60 * 60 * 1000);
+  return nowBRT.toISOString().slice(0, 10);
+}

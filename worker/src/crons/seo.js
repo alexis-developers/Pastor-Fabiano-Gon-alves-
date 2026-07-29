@@ -1,7 +1,7 @@
 // CRON SEO — Gera artigo bíblico de estudo, envia para aprovação no Telegram
 // Disparo: "0 20 * * 4" (quinta 17:00 BRT)
 
-import { runAI, parseConteudo, logCron, sendTelegram, chunkText } from './ai-helper.js';
+import { runAI, parseConteudo, logCron, sendTelegram, chunkText, getTodayBRT } from './ai-helper.js';
 
 const SYSTEM_PROMPT = `Você é um escritor teológico especializado em estudos bíblicos profundos para o Pastor Fabiano Gonçalves.
 
@@ -155,6 +155,16 @@ function slugify(text) {
 export async function cronSeo(env) {
   const tema = TEMAS_ESTUDO[diaDoAno() % TEMAS_ESTUDO.length];
 
+  // Busca histórico recente para a IA nunca repetir temas ou títulos
+  let historicoPrompt = '';
+  try {
+    const ultimosArtigos = await env.DB.prepare(
+      `SELECT titulo FROM artigos ORDER BY id DESC LIMIT 20`
+    ).all();
+    const titulosUsados = (ultimosArtigos.results || []).map(a => a.titulo).join(' | ');
+    historicoPrompt = `\n\nMEMÓRIA DA IA — ARTIGOS JÁ CRIADOS (NÃO REPETIR TÍTULO OU ABORDAGEM SIMILAR):\n${titulosUsados || 'Nenhum'}`;
+  } catch {}
+
   // Busca PDFs de referência
   let contexto = '';
   try {
@@ -166,8 +176,8 @@ export async function cronSeo(env) {
 
   try {
     const messages = [
-      { role: 'system', content: SYSTEM_PROMPT + contexto },
-      { role: 'user', content: `Escreva um artigo de estudo bíblico COMPLETO e APROFUNDADO sobre: ${tema}\n\nEste artigo será publicado no site do Pastor Fabiano Gonçalves. Siga rigorosamente a estrutura de 9 seções e escreva mínimo 1500 palavras. Não resuma — desenvolva cada seção com profundidade e versículos completos.` },
+      { role: 'system', content: SYSTEM_PROMPT + contexto + historicoPrompt },
+      { role: 'user', content: `Escreva um artigo de estudo bíblico COMPLETO, INÉDITO e APROFUNDADO sobre: ${tema}\n\nEste artigo será publicado no site do Pastor Fabiano Gonçalves. Siga rigorosamente a estrutura de 9 seções e escreva mínimo 1500 palavras. Não resuma — desenvolva cada seção com profundidade e versículos completos.` },
     ];
     const { text, model } = await runAI(env, messages, 8000);
     const parsed = parseConteudo(text);
@@ -183,7 +193,7 @@ export async function cronSeo(env) {
     }
 
     const slug = slugify(parsed.titulo);
-    const agora = new Date().toISOString().slice(0, 10);
+    const agora = getTodayBRT();
     const hora = Date.now().toString(36);
 
     // Salva como PENDENTE (aguarda aprovação no Telegram)
