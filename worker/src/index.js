@@ -572,28 +572,32 @@ async function telegramWebhook(request, env, origin) {
   if (String(chatId) !== String(groupId)) return json({ ok: true }, 200, origin);
 
   // ── Comandos sem argumentos ──────────────────────────────
-  if (/^\/help$/i.test(text)) {
+  if (/^\/(help|ajuda|comandos)$/i.test(text)) {
     const help = `📋 COMANDOS DISPONÍVEIS:
 
-📖 CONTEÚDO
+📖 ARTIGOS & DEVOCIONAIS
 /pendentes — Ver artigos aguardando aprovação
-/aprovar ID — Publicar artigo
+/aprovar ID — Publicar artigo no site
 /rejeitar ID — Rejeitar artigo
 /salvar ID — Editar e publicar artigo
+/devocional — Gerar devocional + pensamento do dia agora
+/artigo — Gerar artigo de estudo bíblico agora
+/diario — Ver pensamento do dia de hoje
 
-🤖 CRONs
-/devocional — Gerar devocional agora
-/artigo — Gerar artigo de estudo agora
-/diario — Ver pensamento do dia
+📰 NOTÍCIAS (GOSPEL & ECONOMIA)
+/gerar_noticia — Colher RSS e gerar notícia com IA agora
+/noticias_pendentes — Ver notícias aguardando aprovação
+/aprovar_noticia ID (ou /apn ID) — Publicar notícia no site
+/rejeitar_noticia ID (ou /rjn ID) — Rejeitar notícia
 
-🛡️ SEGURANÇA
-/varredura — Rodar security scan agora
+🛡️ SEGURANÇA & VARREDURA
+/varredura — Executar security scan anti-conteúdo político
 
-📊 SISTEMA
+📊 PAINEL E SISTEMA
 /info — Painel completo do sistema
 /status — Status dos CRONs
-/logs — Últimos logs
-/leads — Resumo de leads
+/logs — Últimos logs do sistema
+/leads — Resumo de captação de leitores
 /artigos — Artigos recentes
 /stats — Estatísticas gerais`;
     await tgReply(env, chatId, help);
