@@ -557,19 +557,21 @@ async function chatHandler(request, env, origin) {
 // ============================================================
 async function telegramWebhook(request, env, origin) {
   const secret = request.headers.get('X-Telegram-Bot-Api-Secret-Token') || '';
-  if (!env.TELEGRAM_WEBHOOK_SECRET || !timingSafeEqual(secret, env.TELEGRAM_WEBHOOK_SECRET)) {
+  if (env.TELEGRAM_WEBHOOK_SECRET && !timingSafeEqual(secret, env.TELEGRAM_WEBHOOK_SECRET)) {
     return json({ ok: true }, 200, origin);
   }
 
   const body = await request.json();
-  const msg = body.message;
+  const msg = body.message || body.channel_post;
   if (!msg) return json({ ok: true }, 200, origin);
 
-  const text = (msg.text || '').trim();
+  let text = (msg.text || '').trim();
+  text = text.replace(/^(\/\w+)@\w+/i, '$1'); // Normaliza comandos em grupo com @botname (ex: /gerar_noticia@Bot -> /gerar_noticia)
+
   const chatId = msg.chat.id;
   const groupId = env.TELEGRAM_GROUP_ID;
 
-  if (String(chatId) !== String(groupId)) return json({ ok: true }, 200, origin);
+  if (groupId && String(chatId) !== String(groupId)) return json({ ok: true }, 200, origin);
 
   // ── Comandos sem argumentos ──────────────────────────────
   if (/^\/(help|ajuda|comandos)$/i.test(text)) {
