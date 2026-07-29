@@ -568,17 +568,21 @@ async function telegramWebhook(request, env, origin) {
   let text = (msg.text || '').trim();
   text = text.replace(/^(\/\w+)@\w+/i, '$1'); // Normaliza comandos em grupo com @botname (ex: /gerar_noticia@Bot -> /gerar_noticia)
 
-  const chatId = msg.chat.id;
-  const groupId = env.TELEGRAM_GROUP_ID;
+  const chatId = String(msg.chat.id);
+  const groupId = env.TELEGRAM_GROUP_ID ? String(env.TELEGRAM_GROUP_ID) : '';
+
+  const cleanChat = chatId.replace(/^-100|^-/, '');
+  const cleanGroup = groupId.replace(/^-100|^-/, '');
+  const isMatch = !groupId || chatId === groupId || cleanChat === cleanGroup;
 
   // Comando de descoberta de ID (funciona em qualquer chat/grupo)
   if (/^\/(id|chatid|meuid|start)$/i.test(text)) {
-    await tgReply(env, chatId, `📌 <b>ID DESTE CHAT/GRUPO:</b>\n<code>${chatId}</code>\n\nID autorizado atualmente no sistema: <code>${groupId || 'Nenhum'}</code>.`);
+    await tgReply(env, chatId, `📌 <b>ID DESTE CHAT/GRUPO:</b>\n<code>${chatId}</code>\n\nID autorizado no sistema: <code>${groupId || 'Nenhum'}</code>.`);
     return json({ ok: true }, 200, origin);
   }
 
-  if (groupId && String(chatId) !== String(groupId)) {
-    await tgReply(env, chatId, `⚠️ <b>GRUPO NÃO AUTORIZADO</b>\n\nID deste grupo: <code>${chatId}</code>\nID cadastrado no Worker: <code>${groupId}</code>\n\nCaso este seja o novo grupo oficial, atualize o secret <code>TELEGRAM_GROUP_ID</code>.`);
+  if (!isMatch) {
+    await tgReply(env, chatId, `⚠️ <b>GRUPO NÃO AUTORIZADO</b>\n\nID deste grupo: <code>${chatId}</code>\nID cadastrado no Worker: <code>${groupId}</code>.`);
     return json({ ok: true }, 200, origin);
   }
 
