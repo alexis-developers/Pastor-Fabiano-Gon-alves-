@@ -197,7 +197,7 @@ export default {
       }
 
       // ── Webhook Telegram ──────────────────────────────────
-      if (path === '/api/noticias/teste-cron') {
+      if (path === '/api/test-cron-noticias') {
         const result = await cronNoticias(env);
         return json({ ok: true, result }, 200, origin);
       }
