@@ -203,10 +203,20 @@ p  { font-size: 1rem; color: var(--gray-600); }
   padding: var(--header-h) 0 0 32px;
 }
 
+.hero__image picture {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  height: 100%;
+  max-height: 100%;
+  width: 100%;
+}
+
 .hero__photo {
   width: 100%;
   max-width: 620px;
   height: calc(100vh - var(--header-h));
+  max-height: 100%;
   object-fit: contain;
   object-position: center bottom;
   display: block;
@@ -544,8 +554,8 @@ img[src*="qr-contato"], img[src*="qr_code"] { background: #fff; border-radius: 0
 @media (max-width: 768px) {
   .hero__grid { grid-template-columns: 1fr; min-height: auto; }
   .hero__blue-shape { width: 100%; height: 55%; clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%); bottom: auto; }
-  .hero__image { order: -1; padding: var(--header-h) 0 0; justify-content: center; height: 55vw; min-height: 240px; max-height: 380px; }
-  .hero__photo { width: auto; max-width: 70vw; height: 100%; object-position: bottom center; }
+  .hero__image { order: -1; padding: calc(var(--header-h) + 12px) 0 0; justify-content: center; align-items: flex-end; height: auto; min-height: 280px; max-height: 420px; }
+  .hero__photo { width: auto; max-width: 85vw; height: auto; max-height: 330px; object-fit: contain; object-position: bottom center; }
   .hero__content { padding: 32px 24px 60px; justify-content: flex-start; text-align: center; background: var(--white); position: relative; z-index: 2; }
   .hero__title-blue { color: var(--blue); }
   .hero__verse { text-align: left; }
