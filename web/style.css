@@ -554,8 +554,8 @@ img[src*="qr-contato"], img[src*="qr_code"] { background: #fff; border-radius: 0
 @media (max-width: 768px) {
   .hero__grid { grid-template-columns: 1fr; min-height: auto; }
   .hero__blue-shape { width: 100%; height: 55%; clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%); bottom: auto; }
-  .hero__image { order: -1; padding: calc(var(--header-h) + 12px) 0 0; justify-content: center; align-items: flex-end; height: auto; min-height: 280px; max-height: 420px; }
-  .hero__photo { width: auto; max-width: 85vw; height: auto; max-height: 330px; object-fit: contain; object-position: bottom center; }
+  .hero__image { order: -1; padding: calc(var(--header-h) + 12px) 0 0; justify-content: center; align-items: flex-end; height: auto; min-height: 220px; max-height: 420px; }
+  .hero__photo { width: auto; max-width: 85vw; height: auto; max-height: clamp(180px, 42vh, 330px); object-fit: contain; object-position: bottom center; }
   .hero__content { padding: 32px 24px 60px; justify-content: flex-start; text-align: center; background: var(--white); position: relative; z-index: 2; }
   .hero__title-blue { color: var(--blue); }
   .hero__verse { text-align: left; }
